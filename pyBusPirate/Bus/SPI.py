@@ -1,19 +1,17 @@
-from ..Monitor import Comm
+#!/usr/bin/env python
+# encoding: utf-8
+"""
+SPI.py
 
-class SPI(Comm):
-	def __init__(self, sp='/dev/tty.usbserial-A7004qlY', speed=115200, autoinit=False):
-		Comm.__init__(self, sp, speed)
-		if autoinit is True:
-			self.init_spi()
+Created by Sean Nelson on 2009-09-20.
+Copyright (c) 2009 Sean Nelson. All rights reserved.
+"""
 
-	def init_spi(self):
-		self.tx("M\r")
-		self.tx("5\r")
-		self.tx("4\r")
-		self.tx("1\r")
-		self.tx("2\r")
-		self.tx("1\r")
-		self.tx("2\r")
+from ..Monitor import MonitorCommand
+
+class SPIBase(MonitorCommand):
+	def __init__(self, sp='/dev/tty.usbserial-A7004qlY', speed=115200):
+		MonitorCommand.__init__(self, sp, speed)
 
 	def enable_spi_flash(self, s):
 		for byte in s:
@@ -25,3 +23,17 @@ class SPI(Comm):
 	
 	def spi_get(self):
 		return self.rx()
+
+class SPI(SPIBase):
+	def __init__(self, p='/dev/tty.usbserial-A7004qlY', s=115200):
+		SPIBase.__init__(self, p, s)
+		
+	def init_spi(self):
+		self.tx("M\r")
+		self.tx("5\r")
+		self.tx("4\r")
+		self.tx("1\r")
+		self.tx("2\r")
+		self.tx("1\r")
+		self.tx("2\r")
+
