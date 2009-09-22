@@ -1,35 +1,51 @@
 #!/usr/bin/env python
 # encoding: utf-8
 """
-SPIFlash.py
-
 Created by Sean Nelson on 2009-09-20.
-Copyright (c) 2009 Sean Nelson. All rights reserved.
+Copyright 2009 Sean Nelson <audiohacked@gmail.com>
+
+This file is part of pyBusPirate.
+
+pyBusPirate is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+pyBusPirate is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import string
 import struct
 from pyBusPirate.Bus.SPI import SPI
 
-class SPIFlash:
-	self.wren_cmd = 0x6
-	self.wrdi_cmd = 0x4
-	self.rdid_cmd = 0x9f
-	self.rdsr_cmd = 0x5
-	self.read_cmd = 0x3
-	self.fast_read_cmd = 0xb
-	self.pw_cmd = 0xa
-	self.pp_cmd = 0x2
-	self.pe_cmd = 0xdb
-	self.se_cmd = 0xd8
-	self.dp_cmd = 0xb9
-	self.rdp_cmd = 0xab
-	self.in_data = None
+class SPIFlash(SPI):
+	wren_cmd = 0x6
+	wrdi_cmd = 0x4
+	rdid_cmd = 0x9f
+	rdsr_cmd = 0x5
+	read_cmd = 0x3
+	fast_read_cmd = 0xb
+	pw_cmd = 0xa
+	pp_cmd = 0x2
+	pe_cmd = 0xdb
+	se_cmd = 0xd8
+	dp_cmd = 0xb9
+	rdp_cmd = 0xab
+	in_data = None
+	IN = None
+	OUT = None
 
 	def __init__(self, sp="/dev/tty.usbserial-A7004qlY", ipf=None, opf=None):
+		SPI.__init__(self, sp)
 		self.IN = ipf
 		self.OUT = opf
-		self.spi = SPI(sp)
+		self.spi = self
 		self.spi.init_spi()
 		self.spi.enable_spi_flash("AW")
 
@@ -56,7 +72,7 @@ class SPIFlash:
 	def flash_status(self):
 		s = "[0x%X r]\r"%self.rdsr_cmd
 
-	def flash_write(self, start=0, size=256, data=self.in_data):
+	def flash_write(self, start=0, size=256, data=in_data):
 		if data is None: pass
 		self.page_write(cmd, start, size, data)
 
@@ -87,7 +103,7 @@ class SPIFlash:
 			except:
 				continue
 	
-	def from_file(self, ipf=self.IN, debug=False):
+	def from_file(self, ipf=IN, debug=False):
 		if ipf is not self.IN: self.IN = ipf
 		self.in_data = []
 		byte = ipf.read(1)
