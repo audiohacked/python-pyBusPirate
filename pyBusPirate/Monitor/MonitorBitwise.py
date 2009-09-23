@@ -20,12 +20,32 @@ You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from SPIFlash import SPIFlash
+class MonitorBitwise:
+	""" Bitwise Syntax """
+	def __init__(self):
+		pass
+	
+	""" Clock H/L """
+	def ClockHigh(self):
+		pass
+	def ClockLow(self):
+		pass
 
-if __name__ == '__main__':
-	o = open("output.bin", 'wb+')
-	#i = open("input.bin", 'rb')
-	spi_flash = SPIFlash(opf=o)
-	spi_flash.flash_read(size=256*1024)
-	#spi_flash.from_file(ipf=i)
-	#spi_flash.flash_write()
+	""" Data H/L """
+	def DataHigh(self):
+		pass
+	def DataLow(self):
+		pass
+
+	""" Read data input pin state """
+	def ReadPinState(self):
+		self.tx(".\r")
+
+	""" One clock tick """
+	def ClockTick(self):
+		self.tx("^\r")
+
+	""" Read bit """
+	def ReadBit(self):
+		pass
+

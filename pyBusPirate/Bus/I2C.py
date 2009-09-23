@@ -19,3 +19,25 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
+
+class ModeEnum:
+	SOFTWARE = 1
+	HARDWARE = 2
+
+class SoftwareSpeedEnum:
+	""" Slow (~5KHz)"""
+	SLOW = 1
+	""" Fast (~50KHz)"""
+	FAST = 2
+
+class HardwareSpeedEnum:
+	_100KHZ = 1
+	_400KHZ = 2
+	_1MHZ = 3
+
+class I2C:
+	""" class for I2C Protocol """
+	def __init__(self):
+		pass
+	
+	""" """

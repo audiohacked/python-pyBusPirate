@@ -19,3 +19,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
+
+class MacrosRaw3Wire:
+	pass
+	
+class Raw3Wire:
+	pass

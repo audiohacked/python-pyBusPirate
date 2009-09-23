@@ -19,3 +19,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
+
+class MacroKBD:
+	def Monitor(self):
+		self.ExecMacro(1)
+
+class KBD:
+	def Setup(self):
+		self.SetBusMode(9)

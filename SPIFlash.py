@@ -88,7 +88,7 @@ class SPIFlash(SPI):
 	def page_write(self, start, size, data):
 		if data is None: pass
 		s = "[6][0x%X 0x%X 0x%X 0x%X " % (self.pw_cmd, start>>16&0xFF, start>>8&0xFF, start&0xFF)
-		for byte in data: s += "0x"+byte.encode('hex')+" "
+		for byte in data: s += "0x%X "%byte.encode('hex')
 		s +="]\r"
 		print s
 		#self.spi.spi_send(s)

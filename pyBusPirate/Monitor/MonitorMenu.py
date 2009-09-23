@@ -20,6 +20,40 @@ You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+class BusModeEnum:
+	HIZ = 1
+	_1WIRE = 2
+	UART = 3
+	I2C = 4
+	SPI = 5
+	JTAG = 6
+	RAW2WIRE = 7
+	RAW3WIRE = 8
+	PC_KBD = 9
+	MIDI = 10
+	LCD = 11
+
+class SpeedEnum:
+	B300 = 1
+	B1200 = 2
+	B2400 = 3
+	B4800 = 4
+	B9600 = 5
+	B19200 = 6
+	B38400 = 7
+	B57600 = 8
+	B115200 = 9
+
+class DataOutputEnum:
+	HEX = 1
+	DEC = 2
+	BIN = 3
+	RAW = 4
+
+class OutputTypeEnum:
+	OPEN_DRAIN = 1
+	NORMAL = 2
+
 class MonitorMenu(object):
 	""" Menu Commands """
 	def __init__(self):
@@ -35,36 +69,47 @@ class MonitorMenu(object):
 
 	""" Measure frequency on the AUX pin """
 	def MeasureFrequency(self):
-		pass
+		self.tx("F\r")
 
 	""" Frequency generator/PWM on the AUX pin """
-	def GenerateFrequency(self):
-		pass
-	def SetPWM(self):
-		pass
+	def GenerateFrequency(self, freq=50, duty_cycle=50):
+		self.tx("G\r")
+		self.tx("%d\r"%freq)
+		self.tx("%d\r"%duty_cycle)
+	def SetPWM(self, freq=50, duty_cycle=50):
+		self.tx("G\r")
+		self.tx("%d\r"%freq)
+		self.tx("%d\r"%duty_cycle)
 
 	""" Toggle AUX control between AUX and CS/TMS pins. """
 	def ToggleAUXControl(self):
-		pass
+		self.tx("C\r")
 
 	""" Set bus mode (1-Wire, SPI, I2C, JTAG, UART, etc). """
 	def SetBusMode(self, mode=1):
-		pass
+		self.tx("M\r")
+		self.tx("%d\r"%mode)
 
 	""" Set LSB/MSB first in applicable modes. """
 	def SetMSB(self):
-		pass
+		self.tx("L\r")
+		self.tx("2\r")
 	def SetLSB(self):
-		pass
+		self.tx("L\r")
+		self.tx("1\r")
 
 	""" Pull-up resistors (V0, V2+ hardware). Power supply configuration. """
-	def SetPullup(self, value):
-		pass
+	def PullupEnable(self):
+		self.tx("P\r")
+		self.tx("2\r")
+	def PullupDisable(self):
+		self.tx("P\r")
+		self.tx("1\r")
 
 	""" Power supply voltage report (v1+ hardware only). """
 	def GetPowerSupplyVal(self):
-		pass
+		self.tx("V\r")
 
 	""" Hardware/firmware version information """
 	def GetHWInfo(self):
-		pass
+		self.tx("I\r")

@@ -19,3 +19,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
+
+class MacrosMidi:
+	def I2C_Snooper(self):
+		self.ExecMacro(1)
+	def Search(self):
+		self.ExecMacro(2)
+		
+class Midi:
+	pass

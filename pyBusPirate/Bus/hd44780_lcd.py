@@ -19,3 +19,32 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
+class LCDTypeEnum:
+	"""1. HD44780 (using PCF8574 IO expander)"""
+	HD44780 = 1
+
+class MacrosLCD:
+	def LCD_Reset(self):
+		self.ExecMacro(1)
+		
+	def Init_LCD(self):
+		self.ExecMacro(2)
+
+	def Clear_LCD(self):
+		self.ExecMacro(3)
+
+	""" Cursor position ex:(4:0) """
+	def CursorPos(self, pos):
+		self.ExecMacro2(4)
+
+	def WriteTestText(self):
+		self.ExecMacro(5)
+	
+	def WriteTestNum(self, num):
+		self.ExecMacro2(6, num)
+	
+	def WriteTestChar(self, char):
+		self.ExecMacro2(7, char)
+	
+	def InsertText(self):
+		self.ExecMacro(8)

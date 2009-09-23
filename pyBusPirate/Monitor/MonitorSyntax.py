@@ -19,34 +19,40 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
-
-class MonitorSyntax(object):
+class MonitorSyntax:
 	""" Class for Monitor Syntax Switches """
 	def __init__(self):
 		pass
 
 	""" Toggle Auxiliary pin"""
 	def AuxHigh(self):
-		pass
+		self.tx("A\r")
 	def AuxLow(self):
-		pass
+		self.tx("a\r")
 	def AuxHiZ(self):
-		pass
+		self.tx("@\r")
 
 	""" Enable/Disable on-board power supplies """
 	def EnablePower(self):
-		pass
+		self.tx("W\r")
 	def DisablePower(self):
-		pass
+		self.tx("w\r")
 
 	""" Delay 1uS """
 	def Delay1us(self):
-		pass
+		self.tx("&\r")
 
 	""" Macros """
 	def ExecMacro(self, macro):
-		pass
+		self.tx("(%d)\r"%macro)
+	def ExecMacro2(self, macro, n):
+		self.tx("(%d:%d)\r"%(macro, n))
 
 	""" Measure voltage on ADC pin """
 	def MeasureVoltage(self):
-		pass
+		self.tx("D\r")
+
+	""" Read byte """
+	def ReadByte(self, count=1):
+		self.tx("R\r")
+		
