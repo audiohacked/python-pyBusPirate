@@ -23,14 +23,19 @@ along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 from SPIFlash import SPIFlash
 from pyBusPirate.crc16 import *
 
+write = 0
 if __name__ == '__main__':
-	spi_flash = SPIFlash()
-	#o = open("output.bin", 'wb+')
-	#spi_flash.flash_read(size=256*1024)
-	i = open("firmware.bin", 'rb')
-	spi_flash.from_file(ipf=i)
-	spi_flash.in_data[0x36:0x3B] = array('B', [0x0, 0x19, 0xFD, 0xA0, 0x96, 0xF6])
-	crc = crc16(spi_flash.in_data[0x2C:])
-	spi_flash.in_data[0x2A] = (crc>>8)
-	spi_flash.in_data[0x2B] = (crc&0xFF)
-	spi_flash.flash_write(size=0x200, data=spi_flash.in_data)
+	if write is 0:
+		spi_flash = SPIFlash()
+		o = open("output.bin", 'wb+')
+		spi_flash.flash_read(size=256*1024)
+	else:
+		spi_flash = SPIFlash()
+		i = open("firmware.bin", 'rb')
+		spi_flash.from_file(ipf=i)
+		spi_flash.in_data[0x36:0x3B] = array('B', [0x0, 0x19, 0xFD, 0xA0, 0x96, 0xF6])
+		crc = crc16(spi_flash.in_data[0x2C:])
+		spi_flash.in_data[0x2A] = (crc>>8)
+		spi_flash.in_data[0x2B] = (crc&0xFF)
+		spi_flash.flash_write(size=0x200, data=spi_flash.in_data)
+

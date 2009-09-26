@@ -111,8 +111,8 @@ class SPIFlash(SPI):
 			except:
 				continue
 	
-	def from_file(self, ipf=IN, debug=False):
+	def from_file(self, ipf=IN, size=512 debug=False):
 		if ipf is not self.IN: self.IN = ipf
 		self.in_data = array('B')
-		self.in_data.fromfile(ipf, 512)
+		self.in_data.fromfile(ipf, size)
 
