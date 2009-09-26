@@ -20,17 +20,12 @@ You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from SPIFlash import SPIFlash
-from pyBusPirate.crc16 import *
+class ControlChar:
+	SOH = 0x01
+	STX = 0x02
+	EOT = 0x04
+	ACK = 0x05
+	NAK = 0x15
+	CAN = 0x18
+	CTRLZ = 0x1A
 
-if __name__ == '__main__':
-	spi_flash = SPIFlash()
-	#o = open("output.bin", 'wb+')
-	#spi_flash.flash_read(size=256*1024)
-	i = open("firmware.bin", 'rb')
-	spi_flash.from_file(ipf=i)
-	spi_flash.in_data[0x36:0x3B] = array('B', [0x0, 0x19, 0xFD, 0xA0, 0x96, 0xF6])
-	crc = crc16(spi_flash.in_data[0x2C:])
-	spi_flash.in_data[0x2A] = (crc>>8)
-	spi_flash.in_data[0x2B] = (crc&0xFF)
-	spi_flash.flash_write(size=0x200, data=spi_flash.in_data)

@@ -22,6 +22,7 @@ along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 
 import string
 import struct
+from array import array
 from pyBusPirate.Bus.SPI import SPI
 
 class SPIFlash(SPI):
@@ -38,8 +39,15 @@ class SPIFlash(SPI):
 	dp_cmd = 0xb9
 	rdp_cmd = 0xab
 	in_data = None
+	in_sdata = None
 	IN = None
 	OUT = None
+
+	def b2s(self, data):
+		in_sdata = array('H', data)
+	
+	def s2b(self, data):
+		in_data = array('B', data)
 
 	def __init__(self, sp="/dev/tty.usbserial-A7004qlY", ipf=None, opf=None):
 		SPI.__init__(self, sp)
@@ -66,7 +74,6 @@ class SPIFlash(SPI):
 		
 	def chip_id(self):
 		s = "[0x%X r:3]\r"%self.rdid_cmd
-		#print s
 		self.spi.spi_send(s)
 
 	def flash_status(self):
@@ -74,7 +81,8 @@ class SPIFlash(SPI):
 
 	def flash_write(self, start=0, size=256, data=in_data):
 		if data is None: pass
-		self.page_write(cmd, start, size, data)
+		for i in range(size/256):
+			self.page_write(256*i, size, data[256*i:256*(i+1)])
 
 	def flash_read(self, start=0, size=512):
 		for i in range(size/256):
@@ -88,10 +96,10 @@ class SPIFlash(SPI):
 	def page_write(self, start, size, data):
 		if data is None: pass
 		s = "[6][0x%X 0x%X 0x%X 0x%X " % (self.pw_cmd, start>>16&0xFF, start>>8&0xFF, start&0xFF)
-		for byte in data: s += "0x%X "%byte.encode('hex')
+		for byte in data: s += "0x%X "%byte
 		s +="]\r"
-		print s
-		#self.spi.spi_send(s)
+		#print s
+		self.spi.spi_send(s)
 	
 	def to_file(self, data, debug=False):
 		for byte in data.split(' '):
@@ -105,9 +113,6 @@ class SPIFlash(SPI):
 	
 	def from_file(self, ipf=IN, debug=False):
 		if ipf is not self.IN: self.IN = ipf
-		self.in_data = []
-		byte = ipf.read(1)
-		while byte:
-			self.in_data.append(byte)
-			byte = ipf.read(1)
+		self.in_data = array('B')
+		self.in_data.fromfile(ipf, 512)
 
