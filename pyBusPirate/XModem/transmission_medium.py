@@ -51,3 +51,10 @@ class XComm(Comm):
 
 	def can(self):
 		self.conn.write(ControlChar.CAN)
+
+	def inbyte(self, timeout=1000): # timeout in ms
+		return self.conn.read(1)
+
+	def outbyte(self, byte):
+		self.conn.write(byte)
+

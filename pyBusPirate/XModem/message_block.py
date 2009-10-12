@@ -26,46 +26,24 @@ Each block of the transfer looks like:
 in which:
 <SOH> = 01 hex
 <blk #> = binary number, starts at 01 increments by 1, and wraps 0FFH to 00H (not to 01)
-<255-blk #> = blk # after going thru 8080 "CMA" instr, i.e. each bit complemented in the 8-bit block number. Formally, this is the "ones complement".
+<255-blk #> = blk # after going thru 8080 "CMA" instr, i.e. each bit complemented
+				in the 8-bit block number. Formally, this is the "ones complement".
 <cksum> = the sum of the data bytes only. Toss any carry.
 """
 
 from enum import ControlChar
-from transmission_medium import XComm
+from transfer import *
+from receive import *
 
-class MSGBLK(XComm):
-	""" Message Block format"""
-	block = str()
+DLY_1S=1000
+
+class MsgBlock(RecvMsgBlock, TransMsgBlock):
 	def __init__(self):
-		XComm.__init__(self)
+		RecvMsgBlock.__init__(self)
+		TransMsgBLock.__init__(self)
 	
-	def cksum(self, data):
-		r = byte(0)
-		for byte in data:
-			r += byte
-		return r	
-
-	""" Sending a File """
-	def transmit(self, data, b=1 bs=128):
-		if bs is 1024:
-			self.block = ControlChar.STX
-		elif bs is 128:
-			self.block = ControlChar.SOH
-		else:
-			return 0
-		self.block += b
-		self.block += (255-b)
-		self.block += data
-		self.block += self.cksum(data)
-		self.conn.write(self.block)
-		return self.got_ack()
-
-	def retransmit(self, block):
-		self.conn.write(block)
-		return self.got_ack()
-
 	def got_ack(self):
-		response = self.conn.read(1)
+		response = self.inbyte(1000)
 		if response is ControlChar.ACK:
 			return 1
 		elif response is ControlChar.NAK:
@@ -74,7 +52,11 @@ class MSGBLK(XComm):
 	def got_nak(self):
 		pass
 
-	""" Receiving a File """	
-	def receive(self):
-		pass
+	def cksum(self, data):
+		r = byte(0)
+		for byte in data:
+			r += byte
+		return r
+
+
 
