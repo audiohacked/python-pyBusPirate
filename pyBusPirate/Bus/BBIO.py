@@ -23,6 +23,16 @@ along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 import select
 import serial
 
+class BBIO_pins:
+	# Bits are assigned as such:
+	MOSI = 0x01;
+	CLK = 0x02;
+	MISO = 0x04;
+	CS = 0x08;
+	AUX = 0x10;
+	PULLUP = 0x20;
+	POWER = 0x40;
+
 class BBIO:
 	def __init__(self, serial_port="/dev/tty.usbserial-A7004qlY", speed=115200):
 		self.port = serial.Serial(serial_port, speed)
