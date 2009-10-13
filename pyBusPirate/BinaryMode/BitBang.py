@@ -36,28 +36,29 @@ class BBIO_pins:
 class BBIO:
 	def __init__(self, serial_port="/dev/tty.usbserial-A7004qlY", speed=115200):
 		self.port = serial.Serial(serial_port, speed)
-		
+
 	def reset(self):
-		self.port.write("\x00")
-		select.select(None, None, None, 0.1)
+		for i in range(20):
+			self.port.write("\x00")
+			select.select(None, None, None, 0.1)
 		if self.port.read(5) is "BBIO1": return 1
 		else: return 0
-		
+
 	def enterRawSPI(self):
 		self.port.write("\x01")
 		select.select(None, None, None, 0.1)
 		if self.port.read(4) is "SPI1": return 1
 		else: return 0
-		
+
 	def resetBP(self):
 		self.port.write("\x0f")
 		select.select(None, None, None, 0.1)
-		
+
 	def cfg_pins(self, config):
 		self.port.write(0x40 | config)
 		select.select(None, None, None, 0.1)
-		
+
 	def set_pins(self, pins):
 		self.port.write(0x80 | config)
 		select.select(None, None, None, 0.1)
-		
+
