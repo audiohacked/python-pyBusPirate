@@ -56,67 +56,58 @@ class RawSPI(BBIO):
 
 	def CS_Low(self):
 		self.port.write("\x02")
-		select.select(None, None, None, 0.1)
-		if self.port.read() is 0x01: return 1
-		else: return 0
+		self.timeout(0.1)
+		return self.response(1, True)
 
 	def CS_High(self):
 		self.port.write("\x03")
-		select.select(None, None, None, 0.1)
-		if self.port.read() is 0x01: return 1
-		else: return 0
+		self.timeout(0.1)
+		return self.response(1, True)
 
 	def bulkTrans(self, byte_count=16, byte_string):
 		self.port.write(0x10 | (byte_count-1))
-		select.select(None, None, None, 0.1)
+		self.timeout(0.1)
 		for i in range(byte_count):
 			self.port.write(byte_string[i])
-			select.select(None, None, None, 0.1)
-		bulk_read = self.port.read(byte_count)
+			self.timeout(0.1)
+		return self.response(byte_count, True)
 
 	def low_nibble(self, nibble):
 		self.port.write(0x20 | nibble)
-		select.select(None, None, None, 0.1)
-		return self.port.read()
+		self.timeout(0.1)
+		return self.response(1, True)
 
 	def high_nibble(self, nibble):
 		self.port.write(0x30 | nibble)
-		select.select(None, None, None, 0.1)
-		return self.port.read()
+		self.timeout(0.1)
+		return self.response(1, True)
 
 	def cfg_pins(self, ):
 		self.port.write(0x40 | )
-		select.select(None, None, None, 0.1)
-		if self.port.read() is 0x01: return 1
-		else: return 0
+		self.timeout(0.1)
+		return self.response()
 
 	def read_pins(self):
 		self.port.write(0x50)
-		select.select(None, None, None, 0.1)
-		return self.port.read()
+		self.timeout(0.1)
+		return self.response(1, True)
 
 	def set_speed(self, spi_speed=SPISpeed._4MHZ):
 		self.port.write(0x60 | spi_speed)
-		select.select(None, None, None, 0.1)
-		if self.port.read() is 0x01: return 1
-		else: return 0
+		self.timeout(0.1)
+		return self.response()
 
 	def read_speed(self):
 		self.port.write(0x70)
 		select.select(None, None, None, 0.1)
-		return self.port.read()
+		return self.response(1, True)
 
 	def cfg_spi(self, spi_cfg):
 		self.port.write(0x80 | )
 		select.select(None, None, None, 0.1)
-		if self.port.read() is 0x01: return 1
-		else: return 0
+		return self.response()
 
 	def read_spi_cfg(self):
 		self.port.write(0x90)
 		select.select(None, None, None, 0.1)
-		return self.port.read()
-
-	def sleep(self):
-		select.select(None, None, None, 0.1)
-
+		return self.response(1, True)

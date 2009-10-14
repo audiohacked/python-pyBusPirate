@@ -72,6 +72,14 @@ class BBIO:
 		self.port.write(0x80 | config)
 		select.select(None, None, None, 0.1)
 
-	def sleep(self, timeout=0.1):
+	def timeout(self, timeout=0.1):
 		select.select(None, None, None, timeout)
 
+	def response(self, byte_count=1, return_data=False):
+		data = self.port.read(byte_count)
+		if byte_count is 1 and return_data is False:
+			if data is 0x01: return 1
+			else: return 0
+		else:
+			return data
+		
