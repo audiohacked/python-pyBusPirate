@@ -21,7 +21,7 @@ along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import select
-from .BBIO import BBIO
+from .BitBang import *
 
 class SPISpeed:
 	_30KHZ = 0b000
@@ -33,12 +33,6 @@ class SPISpeed:
 	_4MHZ = 0b110
 	_8MHZ = 0b111
 
-class SPIPins:
-	POWER = 0x8
-	PULLUPS = 0x4
-	AUX = 0x2
-	CS = 0x1
-	
 class SPICfg:
 	OUT_TYPE = 0x8
 	IDLE = 0x4
@@ -49,10 +43,10 @@ class SPI_OUT_TYPE:
 	HIZ = 0
 	_3V3 = 1
 
-class RawSPI(BBIO):
+class SPI(BBIO):
 	bulk_read = None
-	def __init__(self):
-		BBIO.__init__(self)
+	def __init__(self, port, speed):
+		BBIO.__init__(self, port, speed)
 
 	def CS_Low(self):
 		self.port.write("\x02")
@@ -64,50 +58,23 @@ class RawSPI(BBIO):
 		self.timeout(0.1)
 		return self.response(1, True)
 
-	def bulkTrans(self, byte_count=16, byte_string):
-		self.port.write(0x10 | (byte_count-1))
-		self.timeout(0.1)
-		for i in range(byte_count):
-			self.port.write(byte_string[i])
-			self.timeout(0.1)
-		return self.response(byte_count, True)
-
 	def low_nibble(self, nibble):
-		self.port.write(0x20 | nibble)
+		self.port.write(chr(0x20 | nibble))
 		self.timeout(0.1)
 		return self.response(1, True)
 
 	def high_nibble(self, nibble):
-		self.port.write(0x30 | nibble)
+		self.port.write(chr(0x30 | nibble))
 		self.timeout(0.1)
-		return self.response(1, True)
-
-	def cfg_pins(self, ):
-		self.port.write(0x40 | )
-		self.timeout(0.1)
-		return self.response()
-
-	def read_pins(self):
-		self.port.write(0x50)
-		self.timeout(0.1)
-		return self.response(1, True)
-
-	def set_speed(self, spi_speed=SPISpeed._4MHZ):
-		self.port.write(0x60 | spi_speed)
-		self.timeout(0.1)
-		return self.response()
-
-	def read_speed(self):
-		self.port.write(0x70)
-		select.select(None, None, None, 0.1)
 		return self.response(1, True)
 
 	def cfg_spi(self, spi_cfg):
-		self.port.write(0x80 | )
-		select.select(None, None, None, 0.1)
+		self.port.write(chr(0x80 | spi_cfg))
+		self.timeout(0.1)
 		return self.response()
 
 	def read_spi_cfg(self):
-		self.port.write(0x90)
-		select.select(None, None, None, 0.1)
+		self.port.write("\x90")
+		self.timeout(0.1)
 		return self.response(1, True)
+

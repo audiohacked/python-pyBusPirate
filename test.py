@@ -19,23 +19,49 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
-
-from SPIFlash import SPIFlash
-from pyBusPirate.crc16 import *
-
-write = 0
-if __name__ == '__main__':
-	if write is 0:
-		spi_flash = SPIFlash()
-		o = open("output.bin", 'wb+')
-		spi_flash.flash_read(size=256*1024)
+import sys
+from pyBusPirateLite.SPI import SPI
+""" enter binary mode """
+if __name__ is '__main__':
+	f=open('/tmp/workfile', 'wb')
+	spi = SPI("/dev/tty.usbserial-A7004qlY", 115200)
+	print "Entering binmode: ",
+	if spi.BBmode():
+		print "OK."
 	else:
-		spi_flash = SPIFlash()
-		i = open("firmware.bin", 'rb')
-		spi_flash.from_file(ipf=i)
-		spi_flash.in_data[0x36:0x3B] = array('B', [0x0, 0x19, 0xFD, 0xA0, 0x96, 0xF6])
-		crc = crc16(spi_flash.in_data[0x2C:])
-		spi_flash.in_data[0x2A] = (crc>>8)
-		spi_flash.in_data[0x2B] = (crc&0xFF)
-		spi_flash.flash_write(size=0x200, data=spi_flash.in_data)
+		print "failed."
+		sys.exit()
 
+	print "Entering raw SPI mode: ",
+	if spi.enter_SPI():
+		print "OK."
+	else:
+		print "failed."
+		sys.exit()
+		
+	print "Configuring SPI."
+	if not spi.cfg_pins(SPIPins.POWER | SPIPins.CS):
+		print "Failed to set SPI peripherals."
+		sys.exit()
+	if not spi.set_speed(SPISpeed._2_6MHZ):
+		print "Failed to set SPI Speed."
+		sys.exit()
+	if not spi.cfg_spi(SPICfg.CLK_EDGE | SPICfg.OUT_TYPE):
+		print "Failed to set SPI configuration.";
+		sys.exit()
+	spi.timeout(0.2)
+	
+	print "Reading EEPROM."
+	spi.CS_Low()
+	spi.bulk_trans(4, [0x3, 0, 0, 0])
+	d = spi.bulk_trans(4)
+	f.write(d)
+	spi.CS_High()
+	
+	print "Reset Bus Pirate to user terminal: "
+	if spi.resetBP():
+		print "OK."
+	else:
+		print "failed."
+		sys.exit()
+		

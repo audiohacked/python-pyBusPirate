@@ -23,7 +23,17 @@ along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 import select
 import serial
 
-class BBIO_pins:
+"""
+PICSPEED = 24MHZ / 16MIPS
+"""
+
+class PinCfg:
+	POWER = 0x8
+	PULLUPS = 0x4
+	AUX = 0x2
+	CS = 0x1
+
+class BBIOPins:
 	# Bits are assigned as such:
 	MOSI = 0x01;
 	CLK = 0x02;
@@ -34,46 +44,55 @@ class BBIO_pins:
 	POWER = 0x40;
 
 class BBIO:
-	def __init__(self, serial_port="/dev/tty.usbserial-A7004qlY", speed=115200):
-		self.port = serial.Serial(serial_port, speed)
+	def __init__(self, p="/dev/bus_pirate", s=115200, t=1):
+		self.port = serial.Serial(p, s, timeout=t)
 	
 	def BBmode(self):
+		self.resetBP()
 		for i in range(20):
 			self.reset()
-		if self.port.read(5) is "BBIO1": return 1
+		if self.response(5) == "BBIO1": return 1
 		else: return 0
-		
 
 	def reset(self):
 		self.port.write("\x00")
-		select.select(None, None, None, 0.1)
+		self.timeout(0.1)
 
 	def enter_SPI(self):
+		self.response(5)
 		self.port.write("\x01")
-		select.select(None, None, None, 0.1)
-		if self.port.read(4) is "SPI1": return 1
+		self.timeout(0.1)
+		if self.response(4) == "SPI1": return 1
 		else: return 0
 
 	def enter_I2C(self):
 		self.port.write("\x02")
-		select.select(None, None, None, 0.1)
-		if self.port.read(4) is "I2C1": return 1
+		self.timeout(0.1)
+		if self.response(4) == "I2C1": return 1
 		else: return 0
 
+	def enter_UART(self):
+		self.port.write("\x03")
+		self.timeout(0.1)
+		return self.response(4)
+		
 	def resetBP(self):
-		self.port.write("\x0f")
-		select.select(None, None, None, 0.1)
+		self.reset()
+		self.port.write("\x0F")
+		self.timeout(0.1)
+		self.port.read(200)
+		return 1
 
-	def cfg_pins(self, config):
+	def raw_cfg_pins(self, config):
 		self.port.write(0x40 | config)
-		select.select(None, None, None, 0.1)
+		self.timeout(0.1)
 
-	def set_pins(self, pins):
+	def raw_set_pins(self, pins):
 		self.port.write(0x80 | config)
-		select.select(None, None, None, 0.1)
+		self.timeout(0.1)
 
 	def timeout(self, timeout=0.1):
-		select.select(None, None, None, timeout)
+		select.select([], [], [], timeout)
 
 	def response(self, byte_count=1, return_data=False):
 		data = self.port.read(byte_count)
@@ -82,4 +101,51 @@ class BBIO:
 			else: return 0
 		else:
 			return data
-		
+
+	""" Self-Test """
+	def short_selftest(self):
+		self.port.write("\x10")
+		self.timeout(0.1)
+		return self.response(1, True)
+
+	def long_selftest(self):
+		self.port.write("\x11")
+		self.timeout(0.1)
+		return self.response(1, True)
+
+	""" General Commands for Higher-Level Modes """
+	def mode_string(self):
+		self.port.write("\x01")
+		self.timeout(0.1)
+		return self.response()
+
+	def bulk_trans(self, byte_count=1, byte_string=None):
+		if byte_string is None: pass
+		self.port.write(chr(0x10 | (byte_count-1)))
+		self.timeout(0.1)
+		for i in range(byte_count):
+			self.port.write(chr(byte_string[i]))
+			self.timeout(0.1)
+		data = self.response(byte_count+2, True)
+		return data[1:]
+
+	def cfg_pins(self, pins=0):
+		self.port.write(chr(0x40 | pins))
+		self.timeout(0.1)
+		return self.response()
+
+	def read_pins(self):
+		self.port.write("\x50")
+		self.timeout(0.1)
+		return self.response(1, True)
+
+	def set_speed(self, spi_speed=0):
+		self.port.write(chr(0x60 | spi_speed))
+		self.timeout(0.1)
+		return self.response()
+
+	def read_speed(self):
+		self.port.write("\x70")
+		select.select(None, None, None, 0.1)
+		return self.response(1, True)
+
