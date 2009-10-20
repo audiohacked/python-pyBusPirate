@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 """
-Created by Sean Nelson on 2009-09-20.
+Created by Sean Nelson on 2009-10-14.
 Copyright 2009 Sean Nelson <audiohacked@gmail.com>
 
 This file is part of pyBusPirate.

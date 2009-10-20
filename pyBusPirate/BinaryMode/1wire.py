@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 """
-Created by Sean Nelson on 2009-10-14.
+Created by Sean Nelson on 2009-10-20.
 Copyright 2009 Sean Nelson <audiohacked@gmail.com>
 
 This file is part of pyBusPirate.
@@ -20,60 +20,47 @@ You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+"""
+inary1WIRE mode:
+# 00000000 - reset to BBIO
+# 00000001 – mode version string (1W01)
+# 00000010 – 1wire reset
+# 00000100 - read byte
+# 00001000 - ROM search macro (0xf0)
+# 00001001 - ALARM search macro (0xec)
+# 0001xxxx – Bulk transfer, send 1-16 bytes (0=1byte!)
+# 0100wxyz – Configure peripherals w=power, x=pullups, y=AUX, z=CS (
+# 0101wxyz – read peripherals (planned, not implemented)
+"""
+
 from .BitBang import *
 
-class SPISpeed:
-	_30KHZ = 0b000
-	_125KHZ = 0b001
-	_250KHZ = 0b010
-	_1MHZ = 0b011
-	_2MHZ = 0b100
-	_2_6MHZ = 0b101
-	_4MHZ = 0b110
-	_8MHZ = 0b111
-
-class SPICfg:
-	OUT_TYPE = 0x8
-	IDLE = 0x4
-	CLK_EDGE = 0x2
-	SAMPLE = 0x1
-
-class SPI_OUT_TYPE:
-	HIZ = 0
-	_3V3 = 1
-
-class SPI(BBIO):
-	bulk_read = None
+class _1WIRE(BBIO):
 	def __init__(self, port, speed):
 		BBIO.__init__(self, port, speed)
 
-	def CS_Low(self):
+	def _1wire_reset(self):
 		self.port.write("\x02")
 		self.timeout(0.1)
-		return self.response(1, True)
+		return self.response(1)
 
-	def CS_High(self):
-		self.port.write("\x03")
+	def read_byte(self):
+		self.port.write("\x04")
 		self.timeout(0.1)
-		return self.response(1, True)
+		return self.response(1)
 
-	def low_nibble(self, nibble):
-		self.port.write(chr(0x20 | nibble))
+	def rom_search(self):
+		self.port.write("\x08")
 		self.timeout(0.1)
-		return self.response(1, True)
+		self.__group_response()
 
-	def high_nibble(self, nibble):
-		self.port.write(chr(0x30 | nibble))
+	def alarm_search(self):
+		self.port.write("\x09")
 		self.timeout(0.1)
-		return self.response(1, True)
+		self.__group_response()
 
-	def cfg_spi(self, spi_cfg):
-		self.port.write(chr(0x80 | spi_cfg))
-		self.timeout(0.1)
-		return self.response()
-
-	def read_spi_cfg(self):
-		self.port.write("\x90")
-		self.timeout(0.1)
-		return self.response(1, True)
+	def __group_response(self):
+		EOD = [0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]
+		while (data = self.port.read(8)) != EOD:
+			print data
 

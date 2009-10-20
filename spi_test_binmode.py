@@ -110,9 +110,9 @@ if __name__ == '__main__':
 		spi.CS_Low()
 		spi.bulk_trans(5, [0xB, 0, 0, 0, 0])
 		for i in range((int(opt.flash_size)/16)):
-			data += spi.bulk_trans(16, read_list_data(16))
+			data = spi.bulk_trans(16, read_list_data(16))
+			f.write(data)
 		spi.CS_High()
-		f.write(data)
 
 	elif opt.command == "write":
 		print "Writing EEPROM."

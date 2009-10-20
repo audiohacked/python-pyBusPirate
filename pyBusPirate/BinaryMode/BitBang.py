@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 """
-Created by Sean Nelson on 2009-09-20.
+Created by Sean Nelson on 2009-10-14.
 Copyright 2009 Sean Nelson <audiohacked@gmail.com>
 
 This file is part of pyBusPirate.
@@ -74,7 +74,14 @@ class BBIO:
 	def enter_UART(self):
 		self.port.write("\x03")
 		self.timeout(0.1)
-		return self.response(4)
+		if self.response(4) == "ART1": return 1
+		else: return 0
+		
+	def enter_1wire(self):
+		self.port.write("\x04")
+		self.timeout(0.1)
+		if self.response(4) == "1W01": return 1
+		else: return 0
 		
 	def resetBP(self):
 		self.reset()
