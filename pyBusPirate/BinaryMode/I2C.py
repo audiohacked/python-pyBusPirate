@@ -34,8 +34,8 @@ class I2CPins:
 	
 class I2C(BBIO):
 	bulk_read = None
-	def __init__(self):
-		BBIO.__init__(self)
+	def __init__(self, port, speed):
+		BBIO.__init__(self, port, speed)
 
 	def send_start_bit(self):
 		self.port.write("\x02")

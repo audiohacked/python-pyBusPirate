@@ -49,8 +49,10 @@ class BBIO:
 	
 	def BBmode(self):
 		self.resetBP()
-		for i in range(20):
-			self.reset()
+		self.port.write("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00")
+		self.timeout(0.1)
+		self.port.flushInput();
+		self.reset()
 		if self.response(5) == "BBIO1": return 1
 		else: return 0
 
@@ -87,7 +89,8 @@ class BBIO:
 		self.reset()
 		self.port.write("\x0F")
 		self.timeout(0.1)
-		self.port.read(200)
+		self.port.read(2000)
+		self.port.flush()
 		return 1
 
 	def raw_cfg_pins(self, config):
@@ -103,8 +106,8 @@ class BBIO:
 
 	def response(self, byte_count=1, return_data=False):
 		data = self.port.read(byte_count)
-		if byte_count is 1 and return_data is False:
-			if data is 0x01: return 1
+		if byte_count == 1 and return_data == False:
+			if data == chr(0x01): return 1
 			else: return 0
 		else:
 			return data
@@ -127,7 +130,7 @@ class BBIO:
 		return self.response()
 
 	def bulk_trans(self, byte_count=1, byte_string=None):
-		if byte_string is None: pass
+		if byte_string == None: pass
 		self.port.write(chr(0x10 | (byte_count-1)))
 		self.timeout(0.1)
 		for i in range(byte_count):
