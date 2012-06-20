@@ -2,7 +2,7 @@
 # encoding: utf-8
 """
 Created by Sean Nelson on 2009-10-20.
-Copyright 2009 Sean Nelson <audiohacked@gmail.com>
+Copyright 2009-2012 Sean Nelson <audiohacked@gmail.com>
 
 This file is part of pyBusPirate.
 
