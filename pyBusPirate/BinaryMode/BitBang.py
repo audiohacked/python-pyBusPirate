@@ -49,17 +49,24 @@ class BBIO:
 	
 	def BBmode(self):
 		self.resetBP()
-		self.port.write("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00")
-		self.timeout(0.1)
-		self.port.flushInput();
-		self.reset()
-		if self.response(5) == "BBIO1": return 1
-		else: return 0
+		for i in range(20): 
+    		self.port.write("\x00")
+    		self.timeout(0.1)
+		    self.port.flushInput();
+		    self.reset()
+		    if self.response(5) == "BBIO1": return 1
+		    else: return 0
 
 	def reset(self):
 		self.port.write("\x00")
 		self.timeout(0.1)
 
+    def read_mode_str(self):
+		self.response(5)
+		self.port.write("\x01")
+		self.timeout(0.1)
+		return self.response(4)
+    
 	def enter_SPI(self):
 		self.response(5)
 		self.port.write("\x01")
@@ -84,7 +91,13 @@ class BBIO:
 		self.timeout(0.1)
 		if self.response(4) == "1W01": return 1
 		else: return 0
-		
+
+    def enter_rawwire(self):
+        self.port.write("\x05")
+        self.timeout(0.1)
+        if self.response(4) == "RAW1": return 1
+        else: return 0
+
 	def resetBP(self):
 		self.reset()
 		self.port.write("\x0F")
@@ -97,7 +110,7 @@ class BBIO:
 		self.port.write(0x40 | config)
 		self.timeout(0.1)
 
-	def raw_set_pins(self, pins):
+	def raw_set_pins(self, config):
 		self.port.write(0x80 | config)
 		self.timeout(0.1)
 
@@ -123,6 +136,40 @@ class BBIO:
 		self.timeout(0.1)
 		return self.response(1, True)
 
+    """ PWM """
+    def setup_pwm(self):
+        pass
+        
+    def clear_pwm(self):
+        self.port.write("\x13")
+        self.timeout(0.1)
+        return self.reponse(1, True)
+
+    """ Miscellanious Functions """
+    def read_voltage(self):
+        self.port.write("\x14")
+        self.timeout(0.1)
+        adc = self.response(2, True)
+        return (adc/1024)*6.6;
+
+    def continuous_voltage(self):
+        pass
+
+    def read_freq(self):
+        self.port.write("\x16")
+        self.timeout(0.1)
+        return self.response(4, True)
+
+	def cfg_pins(self, pins=0):
+		self.port.write(chr(0x40 | pins))
+		self.timeout(0.1)
+		return self.response()
+
+	def toggle_pins(self, pins=0):
+		self.port.write(chr(0x80 | pins))
+		self.timeout(0.1)
+		return self.response()
+
 	""" General Commands for Higher-Level Modes """
 	def mode_string(self):
 		self.port.write("\x01")
@@ -139,11 +186,6 @@ class BBIO:
 		data = self.response(byte_count+2, True)
 		return data[1:]
 
-	def cfg_pins(self, pins=0):
-		self.port.write(chr(0x40 | pins))
-		self.timeout(0.1)
-		return self.response()
-
 	def read_pins(self):
 		self.port.write("\x50")
 		self.timeout(0.1)
@@ -159,3 +201,4 @@ class BBIO:
 		select.select(None, None, None, 0.1)
 		return self.response(1, True)
 
+        

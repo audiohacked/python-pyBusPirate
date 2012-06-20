@@ -21,7 +21,7 @@ along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 """
-inary1WIRE mode:
+Binary1WIRE mode:
 # 00000000 - reset to BBIO
 # 00000001 – mode version string (1W01)
 # 00000010 – 1wire reset
@@ -61,6 +61,7 @@ class _1WIRE(BBIO):
 
 	def __group_response(self):
 		EOD = [0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]
+        if not self.response(): return 0
 		while (data = self.port.read(8)) != EOD:
 			print data
 

@@ -23,8 +23,10 @@ along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 from .BitBang import BBIO
 
 class I2CSpeed:
-	_50KHZ = 0b000
-	_5KHZ = 0b001
+    _400KHZ = 3
+    _100KHZ = 2
+	_50KHZ = 1
+	_5KHZ = 0
 
 class I2CPins:
 	POWER = 0x8
@@ -59,6 +61,17 @@ class I2C(BBIO):
 		
 	def send_nack(self):
 		self.port.write("\x07")
+		self.timeout(0.1)
+		return self.response()
+
+	def start_sniffer(self):
+		self.port.write("\x0F")
+		self.timeout(0.1)
+    
+	def ext_AUX(self, cmd):
+		self.port.write("\x09")
+		self.timeout(0.1)
+		self.port.write(cmd)
 		self.timeout(0.1)
 		return self.response()
 
