@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # encoding: utf-8
 """
-Created by Sean Nelson on 2009-09-20.
-Copyright 2009-2012 Sean Nelson <audiohacked@gmail.com>
+Created by Sean Nelson on 2013-01-06.
+Copyright 2009-2013 Sean Nelson <audiohacked@gmail.com>
 
 This file is part of pyBusPirate.
 
@@ -20,22 +20,21 @@ You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-class DataBitsParityEnum:
-	_8N = 1
-	_8E = 2
-	_8O = 3
-	_9N = 4
+from distutils.core import setup
 
-class ReceivePolarityEnum:
-	Idle1 = 1
-	Idle0 = 2
-
-class MacrosUART:
-	"""Built-in Macros for UART """
-	def __init__(self):
-		pass
-		
-	
-class UART:
-	pass
+setup(
+	name = "pyBusPirate",
+	version = "0.9.2.0",
+	author = "Sean Nelson",
+	author_email = "audiohacked@gmail.com",
+	description = ("pyBusPirate is a library to use/control the Dangerous"
+					"Prototypes' Bus Pirate."),
+	license = "GPLv3",
+	url = "https://gitorious.org/audiohacked/pybuspirate",
+	packages=['pyBusPirate',
+			'pyBusPirate.BinaryMode',
+			'pyBusPirate.Bus',
+			'pyBusPirate.Monitor',
+			'pyBusPirate.XModem'],
+)
 

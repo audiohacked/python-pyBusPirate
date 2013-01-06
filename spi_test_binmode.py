@@ -20,7 +20,7 @@ You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 import sys, optparse
-from pyBusPirateLite.SPI import *
+from pyBusPirate.BinaryMode.SPI import *
 
 def read_list_data(size):
 	data = []

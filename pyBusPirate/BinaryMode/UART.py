@@ -20,7 +20,7 @@ You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from .BitBang import BBIO
+from BitBang import BBIO
 
 class UARTCfg:
 	OUTPUT_TYPE = 0x10
@@ -41,15 +41,15 @@ class UARTSpeed:
 	_115200 = 0b1001
 
 """
-    2.1 00000000 - Exit to bitbang mode, responds "BBIOx"
-    2.2 00000001 – Display mode version string, responds "ARTx"
-    2.3 0000001x – Start (0)/stop(1) echo UART RX
-    2.4 00000111 – Manual baud rate configuration, send 2 bytes
-    2.5 00001111 - UART bridge mode (reset to exit)
-    2.6 0001xxxx – Bulk UART write, send 1-16 bytes (0=1byte!)
-    2.7 0100wxyz – Configure peripherals w=power, x=pullups, y=AUX, z=CS
-    2.8 0110xxxx - Set UART speed
-    2.9 100wxxyz – Configure UART settings
+	2.1 00000000 - Exit to bitbang mode, responds "BBIOx"
+	2.2 00000001 – Display mode version string, responds "ARTx"
+	2.3 0000001x – Start (0)/stop(1) echo UART RX
+	2.4 00000111 – Manual baud rate configuration, send 2 bytes
+	2.5 00001111 - UART bridge mode (reset to exit)
+	2.6 0001xxxx – Bulk UART write, send 1-16 bytes (0=1byte!)
+	2.7 0100wxyz – Configure peripherals w=power, x=pullups, y=AUX, z=CS
+	2.8 0110xxxx - Set UART speed
+	2.9 100wxxyz – Configure UART settings
 """
 class UART(BBIO):
 	def __init__(self):
