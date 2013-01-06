@@ -20,7 +20,7 @@ You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from .BitBang import *
+from BitBang import *
 
 class SPISpeed:
 	_30KHZ = 0b000
@@ -42,17 +42,17 @@ class SPI_OUT_TYPE:
 	HIZ = 0
 	_3V3 = 1
 """
-    3.1 00000000 - Enter raw bitbang mode, reset to raw bitbang mode
-    3.2 00000001 - Enter raw SPI mode, display version string
-    3.3 0000001x - CS high (1) or low (0)
-    3.4 000011XX - Sniff SPI traffic when CS low(10)/all(01)
-    3.5 0001xxxx - Bulk SPI transfer, send/read 1-16 bytes (0=1byte!)
-    3.6 0100wxyz - Configure peripherals w=power, x=pull-ups, y=AUX, z=CS
-    3.7 01100xxx - SPI speed
-    3.8 1000wxyz - SPI config, w=HiZ/3.3v, x=CKP idle, y=CKE edge, z=SMP sample
-    3.9 00000100 - Write then read
-        3.9.1 00000101 - Write then read, no CS
-    3.10 AVR Extended Commands
+	3.1 00000000 - Enter raw bitbang mode, reset to raw bitbang mode
+	3.2 00000001 - Enter raw SPI mode, display version string
+	3.3 0000001x - CS high (1) or low (0)
+	3.4 000011XX - Sniff SPI traffic when CS low(10)/all(01)
+	3.5 0001xxxx - Bulk SPI transfer, send/read 1-16 bytes (0=1byte!)
+	3.6 0100wxyz - Configure peripherals w=power, x=pull-ups, y=AUX, z=CS
+	3.7 01100xxx - SPI speed
+	3.8 1000wxyz - SPI config, w=HiZ/3.3v, x=CKP idle, y=CKE edge, z=SMP sample
+	3.9 00000100 - Write then read
+		3.9.1 00000101 - Write then read, no CS
+	3.10 AVR Extended Commands
 """
 class SPI(BBIO):
 	bulk_read = None
