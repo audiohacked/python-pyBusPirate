@@ -66,5 +66,5 @@ class _1WIRE(BBIO):
 			data = self.port.read(8)
 			if data == EOD:
 				break
-			print data
+			print(data)
 
