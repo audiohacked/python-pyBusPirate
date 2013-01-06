@@ -46,27 +46,27 @@ class BBIOPins:
 class BBIO:
 	def __init__(self, p="/dev/bus_pirate", s=115200, t=1):
 		self.port = serial.Serial(p, s, timeout=t)
-	
+
 	def BBmode(self):
 		self.resetBP()
 		for i in range(20): 
-    		self.port.write("\x00")
-    		self.timeout(0.1)
-		    self.port.flushInput();
-		    self.reset()
-		    if self.response(5) == "BBIO1": return 1
-		    else: return 0
+			self.port.write("\x00")
+			self.timeout(0.1)
+			self.port.flushInput();
+			self.reset()
+			if self.response(5) == "BBIO1": return 1
+			else: return 0
 
 	def reset(self):
 		self.port.write("\x00")
 		self.timeout(0.1)
 
-    def read_mode_str(self):
+	def read_mode_str(self):
 		self.response(5)
 		self.port.write("\x01")
 		self.timeout(0.1)
 		return self.response(4)
-    
+
 	def enter_SPI(self):
 		self.response(5)
 		self.port.write("\x01")
@@ -85,18 +85,18 @@ class BBIO:
 		self.timeout(0.1)
 		if self.response(4) == "ART1": return 1
 		else: return 0
-		
+
 	def enter_1wire(self):
 		self.port.write("\x04")
 		self.timeout(0.1)
 		if self.response(4) == "1W01": return 1
 		else: return 0
 
-    def enter_rawwire(self):
-        self.port.write("\x05")
-        self.timeout(0.1)
-        if self.response(4) == "RAW1": return 1
-        else: return 0
+	def enter_rawwire(self):
+		self.port.write("\x05")
+		self.timeout(0.1)
+		if self.response(4) == "RAW1": return 1
+		else: return 0
 
 	def resetBP(self):
 		self.reset()
@@ -136,29 +136,29 @@ class BBIO:
 		self.timeout(0.1)
 		return self.response(1, True)
 
-    """ PWM """
-    def setup_pwm(self):
-        pass
-        
-    def clear_pwm(self):
-        self.port.write("\x13")
-        self.timeout(0.1)
-        return self.reponse(1, True)
+	""" PWM """
+	def setup_pwm(self):
+		pass
 
-    """ Miscellanious Functions """
-    def read_voltage(self):
-        self.port.write("\x14")
-        self.timeout(0.1)
-        adc = self.response(2, True)
-        return (adc/1024)*6.6;
+	def clear_pwm(self):
+		self.port.write("\x13")
+		self.timeout(0.1)
+		return self.reponse(1, True)
 
-    def continuous_voltage(self):
-        pass
+	""" Miscellanious Functions """
+	def read_voltage(self):
+		self.port.write("\x14")
+		self.timeout(0.1)
+		adc = self.response(2, True)
+		return (adc/1024)*6.6;
 
-    def read_freq(self):
-        self.port.write("\x16")
-        self.timeout(0.1)
-        return self.response(4, True)
+	def continuous_voltage(self):
+		pass
+
+	def read_freq(self):
+		self.port.write("\x16")
+		self.timeout(0.1)
+		return self.response(4, True)
 
 	def cfg_pins(self, pins=0):
 		self.port.write(chr(0x40 | pins))

@@ -37,3 +37,4 @@ class MacrosUART:
 		
 	
 class UART:
+	pass

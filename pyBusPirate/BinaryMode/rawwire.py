@@ -23,8 +23,8 @@ along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 from .BitBang import *
 
 class I2CSpeed:
-    _400KHZ = 3
-    _100KHZ = 2
+	_400KHZ = 3
+	_100KHZ = 2
 	_50KHZ = 1
 	_5KHZ = 0
 
@@ -38,24 +38,24 @@ class RawConfig:
 
 """
 
-    2.1 00000000 – Exit to bitbang mode, responds “BBIOx”
-    2.2 00000001 – Display mode version string, responds “RAWx”
-    2.3 0000001x - I2C-style start (0) / stop (1) bit
-    2.4 0000010x- CS low (0) / high (1)
-    2.5 00000110 - Read byte
-    2.6 00000111 - Read bit
-    2.7 00001000 - Peek at input pin
-    2.8 00001001 - Clock tick
-    2.9 0000101x - Clock low (0) / high (1)
-    2.10 0000110x - Data low (0) / high (1)
-    2.11 0001xxxx – Bulk transfer, send 1-16 bytes (0=1byte!)
-    2.12 0010xxxx - Bulk clock ticks, send 1-16 ticks
-    2.13 0011xxxx - Bulk bits, send 1-8 bits of the next byte (0=1bit!) (added in v4.5)
-    2.14 0100wxyz – Configure peripherals w=power, x=pullups, y=AUX, z=CS
-    2.15 011000xx – Set speed, 3=~400kHz, 2=~100kHz, 1=~50kHz, 0=~5kHz
-    2.16 1000wxyz – Config, w=HiZ/3.3v, x=2/3wire, y=msb/lsb, z=not used
-    2.17 10100100 - PIC write. Send command + 2 bytes of data, read 1 byte (v5.1)
-    2.18 10100101 - PIC read. Send command, read 1 byte of data (v5.1)
+	2.1 00000000 – Exit to bitbang mode, responds “BBIOx”
+	2.2 00000001 – Display mode version string, responds “RAWx”
+	2.3 0000001x - I2C-style start (0) / stop (1) bit
+	2.4 0000010x- CS low (0) / high (1)
+	2.5 00000110 - Read byte
+	2.6 00000111 - Read bit
+	2.7 00001000 - Peek at input pin
+	2.8 00001001 - Clock tick
+	2.9 0000101x - Clock low (0) / high (1)
+	2.10 0000110x - Data low (0) / high (1)
+	2.11 0001xxxx – Bulk transfer, send 1-16 bytes (0=1byte!)
+	2.12 0010xxxx - Bulk clock ticks, send 1-16 ticks
+	2.13 0011xxxx - Bulk bits, send 1-8 bits of the next byte (0=1bit!) (added in v4.5)
+	2.14 0100wxyz – Configure peripherals w=power, x=pullups, y=AUX, z=CS
+	2.15 011000xx – Set speed, 3=~400kHz, 2=~100kHz, 1=~50kHz, 0=~5kHz
+	2.16 1000wxyz – Config, w=HiZ/3.3v, x=2/3wire, y=msb/lsb, z=not used
+	2.17 10100100 - PIC write. Send command + 2 bytes of data, read 1 byte (v5.1)
+	2.18 10100101 - PIC read. Send command, read 1 byte of data (v5.1)
 
 """
 class RawWire(BBIO):

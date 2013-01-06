@@ -61,7 +61,10 @@ class _1WIRE(BBIO):
 
 	def __group_response(self):
 		EOD = [0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]
-        if not self.response(): return 0
-		while (data = self.port.read(8)) != EOD:
+		if not self.response(): return 0
+		while 1:
+			data = self.port.read(8)
+			if data == EOD:
+				break
 			print data
 
