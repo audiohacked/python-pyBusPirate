@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 """
-Created by Sean Nelson on 2009-09-20.
+Created by Sean Nelson on 2013-01-06.
 Copyright 2009-2013 Sean Nelson <audiohacked@gmail.com>
 
 This file is part of pyBusPirate.
@@ -20,10 +20,21 @@ You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-class MacroKBD:
-	def Monitor(self):
-		self.ExecMacro(1)
+from distutils.core import setup
 
-class KBD:
-	def Setup(self):
-		self.SetBusMode(9)
+setup(
+	name = "pyBusPirate",
+	version = "0.9.2.0",
+	author = "Sean Nelson",
+	author_email = "audiohacked@gmail.com",
+	description = ("pyBusPirate is a library to use/control the Dangerous"
+					"Prototypes' Bus Pirate."),
+	license = "GPLv3",
+	url = "https://gitorious.org/audiohacked/pybuspirate",
+	packages=['pyBusPirate',
+			'pyBusPirate.BinaryMode',
+			'pyBusPirate.Bus',
+			'pyBusPirate.Monitor',
+			'pyBusPirate.XModem'],
+)
+
