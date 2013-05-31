@@ -55,7 +55,7 @@ class BBIO:
 			self.port.flushInput();
 			self.reset()
 			if self.response(5) == "BBIO1": return 1
-			else: return 0
+		else: return 0
 
 	def reset(self):
 		self.port.write("\x00")
