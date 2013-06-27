@@ -107,11 +107,11 @@ class BBIO:
 		return 1
 
 	def raw_cfg_pins(self, config):
-		self.port.write(0x40 | config)
+		self.port.write(chr(0x40 | config))
 		self.timeout(0.1)
 
 	def raw_set_pins(self, config):
-		self.port.write(0x80 | config)
+		self.port.write(chr(0x80 | config))
 		self.timeout(0.1)
 
 	def timeout(self, timeout=0.1):
