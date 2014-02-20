@@ -25,8 +25,8 @@ from pyBusPirate.BinaryMode.I2C import *
 class I2CEeprom(I2C):
 	device_address = 0xA0
 	address_size = 1
-	def __init__(self, port, speed):
-		super(I2CEeprom, self).__init__(port, speed)
+	def __init__(self, port='/dev/ttyUSB0', speed=115200, timeout=1):
+		super(I2CEeprom, self).__init__(port, speed, timeout)
 
 	def configure(self):
 		if not super(I2CEeprom, self).configure():
