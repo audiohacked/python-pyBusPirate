@@ -39,6 +39,15 @@ class I2C(BBIO):
 	def __init__(self, port='/dev/ttyUSB0', speed=115200, timeout=1):
 		super(I2C, self).__init__(port, speed, timeout)
 
+	def configure(self):
+		if not super(I2C, self).configure():
+			return False
+		
+		if not self.enter_I2C():
+			return False
+
+		return True
+
 	def send_start_bit(self):
 		self.port.write(b"\x02")
 		self.timeout(0.1)

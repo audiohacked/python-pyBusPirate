@@ -59,6 +59,15 @@ class SPI(BBIO):
 	def __init__(self, port='/dev/ttyUSB0', speed=115200, timeout=1):
 		super(SPI, self).__init__(port, speed, timeout)
 
+	def configure(self):
+		if not super(SPI, self).configure():
+			return False
+		
+		if not self.enter_SPI():
+			return False
+
+		return True
+
 	def CS_Low(self):
 		self.port.write(b"\x02")
 		self.timeout(0.1)

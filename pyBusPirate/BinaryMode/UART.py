@@ -55,6 +55,15 @@ class UART(BBIO):
 	def __init__(self, port='/dev/ttyUSB0', speed=115200, timeout=1):
 		super(UART, self).__init__(port, speed, timeout)
 
+	def configure(self):
+		if not super(UART, self).configure():
+			return False
+		
+		if not self.enter_UART():
+			return False
+
+		return True
+
 	def manual_speed_cfg(self, BRGH, BRGL):
 		self.port.write(b"\x02")
 		self.port.write(BRGH)

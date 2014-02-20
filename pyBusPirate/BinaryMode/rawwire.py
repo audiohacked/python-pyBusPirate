@@ -62,6 +62,15 @@ class RawWire(BBIO):
 	def __init__(self, port, speed):
 		super(RawWire, self).__init__(port, speed)
 
+	def configure(self):
+		if not super(RawWire, self).configure():
+			return False
+		
+		if not self.enter_rawwire():
+			return False
+
+		return True
+
 	def start(self):
 		pass
 

@@ -47,6 +47,12 @@ class BBIO(object):
 	def __init__(self, p="/dev/bus_pirate", s=115200, t=1):
 		self.port = serial.Serial(p, s, timeout=t)
 
+	def configure(self):
+		if not self.BBmode():
+			return False
+
+		return True
+
 	def BBmode(self):
 		self.resetBP()
 		for i in range(20): 

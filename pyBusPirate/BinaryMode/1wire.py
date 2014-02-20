@@ -39,6 +39,15 @@ class _1WIRE(BBIO):
 	def __init__(self, port='/dev/ttyUSB0', speed=115200, timeout=1):
 		super(_1WIRE, self).__init__(port, speed, timeout)
 
+	def configure(self):
+		if not super(_1WIRE, self).configure():
+			return False
+		
+		if not self.enter_1wire():
+			return False
+
+		return True
+
 	def _1wire_reset(self):
 		self.port.write(b"\x02")
 		self.timeout(0.1)
