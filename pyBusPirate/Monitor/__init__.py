@@ -20,7 +20,7 @@ You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-__all__ = [ "MonitorMenu", "MonitorSyntax", "Comm" ]
+__all__ = [ "MonitorBitwise", "MonitorMenu", "MonitorSyntax", "Comm" ]
 
 from Comm import *
 from MonitorMenu import *
