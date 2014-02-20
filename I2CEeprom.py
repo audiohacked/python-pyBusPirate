@@ -55,7 +55,7 @@ class I2CEeprom(I2C):
 		d = self.address2bin(address)
 
 		if type(data) == list:
-			d.expand(data)
+			d.extend(data)
 		else:
 			d.append(data)
 

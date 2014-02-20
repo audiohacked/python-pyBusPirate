@@ -93,7 +93,7 @@ class I2C(BBIO):
 			d = [address]
 		
 		if type(data) == list:
-			d.expand(data)
+			d.extend(data)
 		else:
 			d.append(data)
 
@@ -115,6 +115,7 @@ class I2C(BBIO):
 				self.send_ack()
 			else:
 				self.send_nack()
+				break
 
 		self.send_stop_bit()
 
