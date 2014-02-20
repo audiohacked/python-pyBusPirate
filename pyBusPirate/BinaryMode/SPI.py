@@ -56,16 +56,16 @@ class SPI_OUT_TYPE:
 """
 class SPI(BBIO):
 	bulk_read = None
-	def __init__(self, port, speed):
-		BBIO.__init__(self, port, speed)
+	def __init__(self, port='/dev/ttyUSB0', speed=115200, timeout=1):
+		super(SPI, self).__init__(port, speed, timeout)
 
 	def CS_Low(self):
-		self.port.write("\x02")
+		self.port.write(b"\x02")
 		self.timeout(0.1)
 		return self.response(1, True)
 
 	def CS_High(self):
-		self.port.write("\x03")
+		self.port.write(b"\x03")
 		self.timeout(0.1)
 		return self.response(1, True)
 
@@ -85,7 +85,7 @@ class SPI(BBIO):
 		return self.response()
 
 	def read_spi_cfg(self):
-		self.port.write("\x90")
+		self.port.write(b"\x90")
 		self.timeout(0.1)
 		return self.response(1, True)
 

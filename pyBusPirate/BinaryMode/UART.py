@@ -52,24 +52,24 @@ class UARTSpeed:
 	2.9 100wxxyz – Configure UART settings
 """
 class UART(BBIO):
-	def __init__(self):
-		BBIO.__init__(self)
+	def __init__(self, port='/dev/ttyUSB0', speed=115200, timeout=1):
+		super(UART, self).__init__(port, speed, timeout)
 
 	def manual_speed_cfg(self, BRGH, BRGL):
-		self.port.write("\x02")
+		self.port.write(b"\x02")
 		self.port.write(BRGH)
 		self.port.write(BRGL)
 		self.timeout(0.1)
 		return self.response()
 
 	def begin_input(self):
-		self.port.write("\x04")
+		self.port.write(b"\x04")
 
 	def end_input(self):
-		self.port.write("\x05")
+		self.port.write(b"\x05")
 		
 	def enter_bridge_mode(self):
-		self.port.write("\x0F")
+		self.port.write(b"\x0F")
 		self.timeout(0.1)
 		return self.response(1, True)
 		
@@ -79,7 +79,7 @@ class UART(BBIO):
 		return self.response(1, True)
 		
 	def read_cfg(self):
-		self.port.write("\xD0")
+		self.port.write(b"\xD0")
 		self.timeout(0.1)
 		return self.response(1, True)
 		

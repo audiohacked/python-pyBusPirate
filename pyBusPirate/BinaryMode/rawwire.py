@@ -59,8 +59,8 @@ class RawConfig:
 
 """
 class RawWire(BBIO):
-	def __init__(self):
-		BBIO.__init__(self)
+	def __init__(self, port, speed):
+		super(RawWire, self).__init__(port, speed)
 
 	def start(self):
 		pass
@@ -106,7 +106,7 @@ class RawWire(BBIO):
 
 	def pic_write(self, byte_string):
 		if byte_string == None: pass
-		self.port.write("\xA4")
+		self.port.write(b"\xA4")
 		self.timeout(0.1)
 		for i in range(2):
 			self.port.write(chr(byte_string[i]))

@@ -43,14 +43,14 @@ class BBIOPins:
 	PULLUP = 0x20;
 	POWER = 0x40;
 
-class BBIO:
+class BBIO(object):
 	def __init__(self, p="/dev/bus_pirate", s=115200, t=1):
 		self.port = serial.Serial(p, s, timeout=t)
 
 	def BBmode(self):
 		self.resetBP()
 		for i in range(20): 
-			self.port.write("\x00")
+			self.port.write(b"\x00")
 			self.timeout(0.1)
 			self.port.flushInput();
 			self.reset()
@@ -58,49 +58,49 @@ class BBIO:
 		else: return 0
 
 	def reset(self):
-		self.port.write("\x00")
+		self.port.write(b"\x00")
 		self.timeout(0.1)
 
 	def read_mode_str(self):
 		self.response(5)
-		self.port.write("\x01")
+		self.port.write(b"\x01")
 		self.timeout(0.1)
 		return self.response(4)
 
 	def enter_SPI(self):
 		self.response(5)
-		self.port.write("\x01")
+		self.port.write(b"\x01")
 		self.timeout(0.1)
 		if self.response(4) == "SPI1": return 1
 		else: return 0
 
 	def enter_I2C(self):
-		self.port.write("\x02")
+		self.port.write(b"\x02")
 		self.timeout(0.1)
 		if self.response(4) == "I2C1": return 1
 		else: return 0
 
 	def enter_UART(self):
-		self.port.write("\x03")
+		self.port.write(b"\x03")
 		self.timeout(0.1)
 		if self.response(4) == "ART1": return 1
 		else: return 0
 
 	def enter_1wire(self):
-		self.port.write("\x04")
+		self.port.write(b"\x04")
 		self.timeout(0.1)
 		if self.response(4) == "1W01": return 1
 		else: return 0
 
 	def enter_rawwire(self):
-		self.port.write("\x05")
+		self.port.write(b"\x05")
 		self.timeout(0.1)
 		if self.response(4) == "RAW1": return 1
 		else: return 0
 
 	def resetBP(self):
 		self.reset()
-		self.port.write("\x0F")
+		self.port.write(b"\x0F")
 		self.timeout(0.1)
 		self.port.read(2000)
 		self.port.flush()
@@ -127,12 +127,12 @@ class BBIO:
 
 	""" Self-Test """
 	def short_selftest(self):
-		self.port.write("\x10")
+		self.port.write(b"\x10")
 		self.timeout(0.1)
 		return self.response(1, True)
 
 	def long_selftest(self):
-		self.port.write("\x11")
+		self.port.write(b"\x11")
 		self.timeout(0.1)
 		return self.response(1, True)
 
@@ -141,13 +141,13 @@ class BBIO:
 		pass
 
 	def clear_pwm(self):
-		self.port.write("\x13")
+		self.port.write(b"\x13")
 		self.timeout(0.1)
 		return self.reponse(1, True)
 
 	""" Miscellanious Functions """
 	def read_voltage(self):
-		self.port.write("\x14")
+		self.port.write(b"\x14")
 		self.timeout(0.1)
 		adc = self.response(2, True)
 		return (adc/1024)*6.6;
@@ -156,7 +156,7 @@ class BBIO:
 		pass
 
 	def read_freq(self):
-		self.port.write("\x16")
+		self.port.write(b"\x16")
 		self.timeout(0.1)
 		return self.response(4, True)
 
@@ -172,7 +172,7 @@ class BBIO:
 
 	""" General Commands for Higher-Level Modes """
 	def mode_string(self):
-		self.port.write("\x01")
+		self.port.write(b"\x01")
 		self.timeout(0.1)
 		return self.response()
 
@@ -187,7 +187,7 @@ class BBIO:
 		return data[1:]
 
 	def read_pins(self):
-		self.port.write("\x50")
+		self.port.write(b"\x50")
 		self.timeout(0.1)
 		return self.response(1, True)
 
@@ -197,7 +197,7 @@ class BBIO:
 		return self.response()
 
 	def read_speed(self):
-		self.port.write("\x70")
+		self.port.write(b"\x70")
 		select.select(None, None, None, 0.1)
 		return self.response(1, True)
 
