@@ -20,3 +20,4 @@ You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+__all__ = [ "1wire", "BitBang", "I2C", "SPI", "UART", "rawwire"]

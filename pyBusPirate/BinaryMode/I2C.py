@@ -36,42 +36,90 @@ class I2CPins:
 
 class I2C(BBIO):
 	bulk_read = None
-	def __init__(self, port, speed):
-		BBIO.__init__(self, port, speed)
+	address_7bit = False
+	def __init__(self, port='/dev/ttyUSB0', speed=115200, timeout=1):
+		super(I2C, self).__init__(port, speed, timeout)
+
+	def configure(self):
+		if not super(I2C, self).configure():
+			return False
+		
+		if not self.enter_I2C():
+			return False
+
+		return True
 
 	def send_start_bit(self):
-		self.port.write("\x02")
+		self.port.write(b"\x02")
 		self.timeout(0.1)
 		return self.response()
 
 	def send_stop_bit(self):
-		self.port.write("\x03")
+		self.port.write(b"\x03")
 		self.timeout(0.1)
 		return self.response()
 
 	def read_byte(self):
-		self.port.write("\x04")
+		self.port.write(b"\x04")
 		self.timeout(0.1)
 		return self.response(1, True)
 
 	def send_ack(self):
-		self.port.write("\x06")
+		self.port.write(b"\x06")
 		self.timeout(0.1)
 		return self.response()
 
 	def send_nack(self):
-		self.port.write("\x07")
+		self.port.write(b"\x07")
 		self.timeout(0.1)
 		return self.response()
 
 	def start_sniffer(self):
-		self.port.write("\x0F")
+		self.port.write(b"\x0F")
 		self.timeout(0.1)
 
 	def ext_AUX(self, cmd):
-		self.port.write("\x09")
+		self.port.write(b"\x09")
 		self.timeout(0.1)
 		self.port.write(cmd)
 		self.timeout(0.1)
 		return self.response()
+
+	""" High level commands """
+	def device_write(self, address, data):
+		if self.address_7bit:
+			d = [address << 1]
+		else:
+			d = [address]
+		
+		if type(data) == list:
+			d.extend(data)
+		else:
+			d.append(data)
+
+		self.send_start_bit()
+		self.bulk_trans(len(d), d)
+		self.send_stop_bit()
+
+	def device_read(self, address, length = 1):
+		if self.address_7bit:
+			address = (address << 1) | 1
+
+		d = []
+
+		self.send_start_bit()
+		self.bulk_trans(1, [address])
+		while True:
+			d.append(self.read_byte())
+			if len(d) < length:
+				self.send_ack()
+			else:
+				self.send_nack()
+				break
+
+		self.send_stop_bit()
+
+		return d
+
+
 

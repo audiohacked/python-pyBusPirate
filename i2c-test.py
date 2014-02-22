@@ -21,7 +21,6 @@ You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 import sys
-sys.path.append('pyBusPirate/BinaryMode');
 from pyBusPirate.BinaryMode.I2C import *
 """ enter binary mode """
 

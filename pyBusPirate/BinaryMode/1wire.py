@@ -36,26 +36,35 @@ Binary1WIRE mode:
 from .BitBang import *
 
 class _1WIRE(BBIO):
-	def __init__(self, port, speed):
-		BBIO.__init__(self, port, speed)
+	def __init__(self, port='/dev/ttyUSB0', speed=115200, timeout=1):
+		super(_1WIRE, self).__init__(port, speed, timeout)
+
+	def configure(self):
+		if not super(_1WIRE, self).configure():
+			return False
+		
+		if not self.enter_1wire():
+			return False
+
+		return True
 
 	def _1wire_reset(self):
-		self.port.write("\x02")
+		self.port.write(b"\x02")
 		self.timeout(0.1)
 		return self.response(1)
 
 	def read_byte(self):
-		self.port.write("\x04")
+		self.port.write(b"\x04")
 		self.timeout(0.1)
 		return self.response(1)
 
 	def rom_search(self):
-		self.port.write("\x08")
+		self.port.write(b"\x08")
 		self.timeout(0.1)
 		self.__group_response()
 
 	def alarm_search(self):
-		self.port.write("\x09")
+		self.port.write(b"\x09")
 		self.timeout(0.1)
 		self.__group_response()
 
