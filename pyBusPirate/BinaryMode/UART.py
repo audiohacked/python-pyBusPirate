@@ -83,7 +83,7 @@ class UART(BBIO):
 		return self.response(1, True)
 		
 	def set_cfg(self, cfg):
-		self.port.write(0xC0 | cfg)
+		self.port.write(bytearray((0xC0 | cfg,)))
 		self.timeout(0.1)
 		return self.response(1, True)
 		

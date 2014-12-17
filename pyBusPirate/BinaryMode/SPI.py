@@ -20,7 +20,7 @@ You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from BitBang import *
+from .BitBang import *
 
 class SPISpeed:
 	_30KHZ = 0b000
@@ -79,17 +79,17 @@ class SPI(BBIO):
 		return self.response(1, True)
 
 	def low_nibble(self, nibble):
-		self.port.write(chr(0x20 | nibble))
+		self.port.write(bytearray((0x20 | nibble,)))
 		self.timeout(0.1)
 		return self.response(1, True)
 
 	def high_nibble(self, nibble):
-		self.port.write(chr(0x30 | nibble))
+		self.port.write(bytearray((0x30 | nibble,)))
 		self.timeout(0.1)
 		return self.response(1, True)
 
 	def cfg_spi(self, spi_cfg):
-		self.port.write(chr(0x80 | spi_cfg))
+		self.port.write(bytearray((0x80 | spi_cfg,)))
 		self.timeout(0.1)
 		return self.response()
 
