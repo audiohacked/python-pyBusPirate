@@ -22,7 +22,7 @@ along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 import sys
 from pyBusPirate.BinaryMode.SPI import SPI
 """ enter binary mode """
-if __name__ is '__main__':
+if __name__ == '__main__':
 	f=open('/tmp/workfile', 'wb')
 	spi = SPI("/dev/tty.usbserial-A7004qlY", 115200)
 	print("Entering binmode: ", end=' ')
