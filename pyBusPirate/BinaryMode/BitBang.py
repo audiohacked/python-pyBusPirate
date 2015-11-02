@@ -61,7 +61,7 @@ class BBIO:
 		self.port.write("\x00")
 		self.timeout(0.1)
 
-    def read_mode_str(self):
+	def read_mode_str(self):
 		self.response(5)
 		self.port.write("\x01")
 		self.timeout(0.1)
