@@ -20,8 +20,8 @@ You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from enum import ControlChar
-from transmission_medium import XComm
+from .enum import ControlChar
+from .transmission_medium import XComm
 
 MAXRETRANS=25
 

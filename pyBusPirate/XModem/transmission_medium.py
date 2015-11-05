@@ -37,7 +37,7 @@ complement.
 """
 
 from ..Monitor.Comm import Comm
-from enum import ControlChar
+from .enum import ControlChar
 
 class XComm(Comm):
 	def __init__(self, port="/dev/tty.usbserial-A7004qlY"):

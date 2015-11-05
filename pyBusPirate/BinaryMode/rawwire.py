@@ -20,7 +20,7 @@ You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from BitBang import *
+from .BitBang import *
 
 class I2CSpeed:
 	_400KHZ = 3

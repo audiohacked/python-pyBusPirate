@@ -103,7 +103,7 @@ class SPIFlash(SPI):
 	
 	def to_file(self, data, debug=False):
 		for byte in data.split(' '):
-			if debug: print byte
+			if debug: print(byte)
 			try:
 				h = string.atoi(byte, base=16)
 				x = struct.pack("<B", h)
@@ -111,7 +111,7 @@ class SPIFlash(SPI):
 			except:
 				continue
 	
-	def from_file(self, ipf=IN, size=512 debug=False):
+	def from_file(self, ipf=IN, size=512, debug=False):
 		if ipf is not self.IN: self.IN = ipf
 		self.in_data = array('B')
 		self.in_data.fromfile(ipf, size)

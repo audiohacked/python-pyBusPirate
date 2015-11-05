@@ -31,9 +31,9 @@ in which:
 <cksum> = the sum of the data bytes only. Toss any carry.
 """
 
-from enum import ControlChar
-from transfer import *
-from receive import *
+from .enum import ControlChar
+from .transfer import *
+from .receive import *
 
 DLY_1S=1000
 
