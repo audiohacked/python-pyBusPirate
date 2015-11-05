@@ -33,7 +33,7 @@ Binary1WIRE mode:
 # 0101wxyz – read peripherals (planned, not implemented)
 """
 
-from BitBang import *
+from .BitBang import *
 
 class _1WIRE(BBIO):
 	def __init__(self, port, speed):
