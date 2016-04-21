@@ -20,39 +20,39 @@ You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 class MonitorSyntax:
-	""" Class for Monitor Syntax Switches """
-	def __init__(self):
-		pass
+    """ Class for Monitor Syntax Switches """
+    def __init__(self):
+        pass
 
-	""" Toggle Auxiliary pin"""
-	def AuxHigh(self):
-		self.tx("A\r")
-	def AuxLow(self):
-		self.tx("a\r")
-	def AuxHiZ(self):
-		self.tx("@\r")
+    """ Toggle Auxiliary pin"""
+    def AuxHigh(self):
+        self.tx("A\r")
+    def AuxLow(self):
+        self.tx("a\r")
+    def AuxHiZ(self):
+        self.tx("@\r")
 
-	""" Enable/Disable on-board power supplies """
-	def EnablePower(self):
-		self.tx("W\r")
-	def DisablePower(self):
-		self.tx("w\r")
+    """ Enable/Disable on-board power supplies """
+    def EnablePower(self):
+        self.tx("W\r")
+    def DisablePower(self):
+        self.tx("w\r")
 
-	""" Delay 1uS """
-	def Delay1us(self):
-		self.tx("&\r")
+    """ Delay 1uS """
+    def Delay1us(self):
+        self.tx("&\r")
 
-	""" Macros """
-	def ExecMacro(self, macro):
-		self.tx("(%d)\r"%macro)
-	def ExecMacro2(self, macro, n):
-		self.tx("(%d:%d)\r"%(macro, n))
+    """ Macros """
+    def ExecMacro(self, macro):
+        self.tx("(%d)\r"%macro)
+    def ExecMacro2(self, macro, n):
+        self.tx("(%d:%d)\r"%(macro, n))
 
-	""" Measure voltage on ADC pin """
-	def MeasureVoltage(self):
-		self.tx("D\r")
+    """ Measure voltage on ADC pin """
+    def MeasureVoltage(self):
+        self.tx("D\r")
 
-	""" Read byte """
-	def ReadByte(self, count=1):
-		self.tx("R\r")
-		
+    """ Read byte """
+    def ReadByte(self, count=1):
+        self.tx("R\r")
+        

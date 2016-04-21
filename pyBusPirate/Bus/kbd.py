@@ -21,9 +21,9 @@ along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 class MacroKBD:
-	def Monitor(self):
-		self.ExecMacro(1)
+    def Monitor(self):
+        self.ExecMacro(1)
 
 class KBD:
-	def Setup(self):
-		self.SetBusMode(9)
+    def Setup(self):
+        self.SetBusMode(9)

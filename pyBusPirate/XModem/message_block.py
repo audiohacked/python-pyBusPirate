@@ -27,7 +27,7 @@ in which:
 <SOH> = 01 hex
 <blk #> = binary number, starts at 01 increments by 1, and wraps 0FFH to 00H (not to 01)
 <255-blk #> = blk # after going thru 8080 "CMA" instr, i.e. each bit complemented
-				in the 8-bit block number. Formally, this is the "ones complement".
+                in the 8-bit block number. Formally, this is the "ones complement".
 <cksum> = the sum of the data bytes only. Toss any carry.
 """
 
@@ -38,25 +38,25 @@ from receive import *
 DLY_1S=1000
 
 class MsgBlock(RecvMsgBlock, TransMsgBlock):
-	def __init__(self):
-		RecvMsgBlock.__init__(self)
-		TransMsgBLock.__init__(self)
-	
-	def got_ack(self):
-		response = self.inbyte(1000)
-		if response is ControlChar.ACK:
-			return 1
-		elif response is ControlChar.NAK:
-			return 0
+    def __init__(self):
+        RecvMsgBlock.__init__(self)
+        TransMsgBLock.__init__(self)
+    
+    def got_ack(self):
+        response = self.inbyte(1000)
+        if response is ControlChar.ACK:
+            return 1
+        elif response is ControlChar.NAK:
+            return 0
 
-	def got_nak(self):
-		pass
+    def got_nak(self):
+        pass
 
-	def cksum(self, data):
-		r = byte(0)
-		for byte in data:
-			r += byte
-		return r
+    def cksum(self, data):
+        r = byte(0)
+        for byte in data:
+            r += byte
+        return r
 
 
 

@@ -25,26 +25,26 @@ import os
 import unittest
 
 class MacroJTAG:
-	def ResetChain(self):
-		self.ExecMacro(1)
-		
-	def ProbeChain(self):
-		self.ExecMacro(2)
-		
-	def XSVF_Player(self):
-		self.ExecMaroc(3)
+    def ResetChain(self):
+        self.ExecMacro(1)
+        
+    def ProbeChain(self):
+        self.ExecMacro(2)
+        
+    def XSVF_Player(self):
+        self.ExecMaroc(3)
 
 class JTAG:
-	def __init__(self):
-		pass
-	def Setup(self):
-		self.SetBusMode(6)
-		self.tx("2\r") # output type
+    def __init__(self):
+        pass
+    def Setup(self):
+        self.SetBusMode(6)
+        self.tx("2\r") # output type
 
 class JTAGTests(unittest.TestCase):
-	def setUp(self):
-		pass
+    def setUp(self):
+        pass
 
 
 if __name__ == '__main__':
-	unittest.main()
+    unittest.main()

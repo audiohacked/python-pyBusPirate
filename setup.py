@@ -23,18 +23,18 @@ along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 from distutils.core import setup
 
 setup(
-	name = "pyBusPirate",
-	version = "0.9.2.0",
-	author = "Sean Nelson",
-	author_email = "audiohacked@gmail.com",
-	description = ("pyBusPirate is a library to use/control the Dangerous"
-					"Prototypes' Bus Pirate."),
-	license = "GPLv3",
-	url = "https://gitorious.org/audiohacked/pybuspirate",
-	packages=['pyBusPirate',
-			'pyBusPirate.BinaryMode',
-			'pyBusPirate.Bus',
-			'pyBusPirate.Monitor',
-			'pyBusPirate.XModem'],
+    name = "pyBusPirate",
+    version = "0.9.2.0",
+    author = "Sean Nelson",
+    author_email = "audiohacked@gmail.com",
+    description = ("pyBusPirate is a library to use/control the Dangerous"
+                    "Prototypes' Bus Pirate."),
+    license = "GPLv3",
+    url = "https://gitorious.org/audiohacked/pybuspirate",
+    packages=['pyBusPirate',
+            'pyBusPirate.BinaryMode',
+            'pyBusPirate.Bus',
+            'pyBusPirate.Monitor',
+            'pyBusPirate.XModem'],
 )
 

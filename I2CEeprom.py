@@ -23,52 +23,52 @@ import sys
 from pyBusPirate.BinaryMode.I2C import *
 
 class I2CEeprom(I2C):
-	device_address = 0xA0
-	address_size = 1
-	def __init__(self, port='/dev/ttyUSB0', speed=115200, timeout=1):
-		super(I2CEeprom, self).__init__(port, speed, timeout)
+    device_address = 0xA0
+    address_size = 1
+    def __init__(self, port='/dev/ttyUSB0', speed=115200, timeout=1):
+        super(I2CEeprom, self).__init__(port, speed, timeout)
 
-	def configure(self):
-		if not super(I2CEeprom, self).configure():
-			return False
+    def configure(self):
+        if not super(I2CEeprom, self).configure():
+            return False
 
-		return True
+        return True
 
-	def address2bin(self, address):
-		if self.address_size > 4:
-			self.address_size = 4
-		if self.address_size < 1:
-			self.address_size = 1
+    def address2bin(self, address):
+        if self.address_size > 4:
+            self.address_size = 4
+        if self.address_size < 1:
+            self.address_size = 1
 
-		d = []
-		for i in range(self.address_size):
-			d.insert(0, (address >> 8*i) & 255)
+        d = []
+        for i in range(self.address_size):
+            d.insert(0, (address >> 8*i) & 255)
 
-		return d
+        return d
 
-	def write(self, address, data):
-		if self.address_7bit:
-			da = self.device_address
-		else:
-			da = self.device_address & 0xFE
+    def write(self, address, data):
+        if self.address_7bit:
+            da = self.device_address
+        else:
+            da = self.device_address & 0xFE
 
-		d = self.address2bin(address)
+        d = self.address2bin(address)
 
-		if type(data) == list:
-			d.extend(data)
-		else:
-			d.append(data)
+        if type(data) == list:
+            d.extend(data)
+        else:
+            d.append(data)
 
-		self.device_write(da, d)
+        self.device_write(da, d)
 
-	def read(self, address, length = 1):
-		if self.address_7bit:
-			daw = self.device_address
-			dar = self.device_address
-		else:
-			daw = self.device_address & 0xFE
-			dar = self.device_address | 1
+    def read(self, address, length = 1):
+        if self.address_7bit:
+            daw = self.device_address
+            dar = self.device_address
+        else:
+            daw = self.device_address & 0xFE
+            dar = self.device_address | 1
 
-		self.device_write(daw, self.address2bin(address))
-		return self.device_read(dar, length)
+        self.device_write(daw, self.address2bin(address))
+        return self.device_read(dar, length)
 

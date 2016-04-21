@@ -21,31 +21,31 @@ along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 class MonitorBitwise:
-	""" Bitwise Syntax """
-	def __init__(self):
-		pass
-	
-	""" Clock H/L """
-	def ClockHigh(self):
-		pass
-	def ClockLow(self):
-		pass
+    """ Bitwise Syntax """
+    def __init__(self):
+        pass
+    
+    """ Clock H/L """
+    def ClockHigh(self):
+        pass
+    def ClockLow(self):
+        pass
 
-	""" Data H/L """
-	def DataHigh(self):
-		pass
-	def DataLow(self):
-		pass
+    """ Data H/L """
+    def DataHigh(self):
+        pass
+    def DataLow(self):
+        pass
 
-	""" Read data input pin state """
-	def ReadPinState(self):
-		self.tx(".\r")
+    """ Read data input pin state """
+    def ReadPinState(self):
+        self.tx(".\r")
 
-	""" One clock tick """
-	def ClockTick(self):
-		self.tx("^\r")
+    """ One clock tick """
+    def ClockTick(self):
+        self.tx("^\r")
 
-	""" Read bit """
-	def ReadBit(self):
-		pass
+    """ Read bit """
+    def ReadBit(self):
+        pass
 

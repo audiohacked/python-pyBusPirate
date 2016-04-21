@@ -21,13 +21,13 @@ along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 class MacrosRaw2Wire:
-	pass
-	""" ISO 7813-3 ATR for smart cards, parses reply bytes. """
-	def ATR_SmartCards(self):
-		self.ExecMacro(1)
-	""" ISO 7813-3 parse only (provide your own ATR command). """
-	def ATR(self):
-		self.ExecMacro(2)
+    pass
+    """ ISO 7813-3 ATR for smart cards, parses reply bytes. """
+    def ATR_SmartCards(self):
+        self.ExecMacro(1)
+    """ ISO 7813-3 parse only (provide your own ATR command). """
+    def ATR(self):
+        self.ExecMacro(2)
 
 class Raw2Wire:
-	pass
+    pass

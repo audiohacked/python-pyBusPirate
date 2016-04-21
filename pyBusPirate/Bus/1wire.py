@@ -21,32 +21,32 @@ along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 class Macros1Wire:
-	def __init__(self):
-		pass
-	
-	""" READ ROM (0x33) *for single device bus """
-	def READ_ROM(self):
-		self.ExecMacro(51)
-	
-	""" MATCH ROM (0x55) *followed by 64bit address """
-	def MATCH_ROM(self):
-		self.ExecMacro(85)
-		
-	""" SKIP ROM (0xCC) *followed by command """
-	def SKIP_ROM(self):
-		self.ExecMacro(204)
-		
-	""" ALARM SEARCH (0xEC) """
-	def ALARM_SEARCH(self):
-		self.ExecMacro(236)
-		
-	""" SEARCH ROM (0xF0) """
-	def SEARCH_ROM(self):
-		self.ExecMacro(240)
+    def __init__(self):
+        pass
+    
+    """ READ ROM (0x33) *for single device bus """
+    def READ_ROM(self):
+        self.ExecMacro(51)
+    
+    """ MATCH ROM (0x55) *followed by 64bit address """
+    def MATCH_ROM(self):
+        self.ExecMacro(85)
+        
+    """ SKIP ROM (0xCC) *followed by command """
+    def SKIP_ROM(self):
+        self.ExecMacro(204)
+        
+    """ ALARM SEARCH (0xEC) """
+    def ALARM_SEARCH(self):
+        self.ExecMacro(236)
+        
+    """ SEARCH ROM (0xF0) """
+    def SEARCH_ROM(self):
+        self.ExecMacro(240)
 
 class _1Wire:
-	def __init__(self):
-		pass
-	
-	def Setup(self):
-		self.SetBusMode(2)
+    def __init__(self):
+        pass
+    
+    def Setup(self):
+        self.SetBusMode(2)

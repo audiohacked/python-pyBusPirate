@@ -21,7 +21,7 @@ along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 class MacrosRaw3Wire:
-	pass
-	
+    pass
+    
 class Raw3Wire:
-	pass
+    pass

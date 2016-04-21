@@ -21,11 +21,11 @@ along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 class ControlChar:
-	SOH = 0x01
-	STX = 0x02
-	EOT = 0x04
-	ACK = 0x05
-	NAK = 0x15
-	CAN = 0x18
-	CTRLZ = 0x1A
+    SOH = 0x01
+    STX = 0x02
+    EOT = 0x04
+    ACK = 0x05
+    NAK = 0x15
+    CAN = 0x18
+    CTRLZ = 0x1A
 

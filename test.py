@@ -23,45 +23,45 @@ import sys
 from pyBusPirate.BinaryMode.SPI import SPI
 """ enter binary mode """
 if __name__ is '__main__':
-	f=open('/tmp/workfile', 'wb')
-	spi = SPI("/dev/tty.usbserial-A7004qlY", 115200)
-	print "Entering binmode: ",
-	if spi.BBmode():
-		print "OK."
-	else:
-		print "failed."
-		sys.exit()
+    f=open('/tmp/workfile', 'wb')
+    spi = SPI("/dev/tty.usbserial-A7004qlY", 115200)
+    print "Entering binmode: ",
+    if spi.BBmode():
+        print "OK."
+    else:
+        print "failed."
+        sys.exit()
 
-	print "Entering raw SPI mode: ",
-	if spi.enter_SPI():
-		print "OK."
-	else:
-		print "failed."
-		sys.exit()
-		
-	print "Configuring SPI."
-	if not spi.cfg_pins(SPIPins.POWER | SPIPins.CS):
-		print "Failed to set SPI peripherals."
-		sys.exit()
-	if not spi.set_speed(SPISpeed._2_6MHZ):
-		print "Failed to set SPI Speed."
-		sys.exit()
-	if not spi.cfg_spi(SPICfg.CLK_EDGE | SPICfg.OUT_TYPE):
-		print "Failed to set SPI configuration.";
-		sys.exit()
-	spi.timeout(0.2)
-	
-	print "Reading EEPROM."
-	spi.CS_Low()
-	spi.bulk_trans(4, [0x3, 0, 0, 0])
-	d = spi.bulk_trans(4)
-	f.write(d)
-	spi.CS_High()
-	
-	print "Reset Bus Pirate to user terminal: "
-	if spi.resetBP():
-		print "OK."
-	else:
-		print "failed."
-		sys.exit()
-		
+    print "Entering raw SPI mode: ",
+    if spi.enter_SPI():
+        print "OK."
+    else:
+        print "failed."
+        sys.exit()
+        
+    print "Configuring SPI."
+    if not spi.cfg_pins(SPIPins.POWER | SPIPins.CS):
+        print "Failed to set SPI peripherals."
+        sys.exit()
+    if not spi.set_speed(SPISpeed._2_6MHZ):
+        print "Failed to set SPI Speed."
+        sys.exit()
+    if not spi.cfg_spi(SPICfg.CLK_EDGE | SPICfg.OUT_TYPE):
+        print "Failed to set SPI configuration.";
+        sys.exit()
+    spi.timeout(0.2)
+    
+    print "Reading EEPROM."
+    spi.CS_Low()
+    spi.bulk_trans(4, [0x3, 0, 0, 0])
+    d = spi.bulk_trans(4)
+    f.write(d)
+    spi.CS_High()
+    
+    print "Reset Bus Pirate to user terminal: "
+    if spi.resetBP():
+        print "OK."
+    else:
+        print "failed."
+        sys.exit()
+        

@@ -36,44 +36,44 @@ Binary1WIRE mode:
 from .BitBang import *
 
 class _1WIRE(BBIO):
-	def __init__(self, port='/dev/ttyUSB0', speed=115200, timeout=1):
-		super(_1WIRE, self).__init__(port, speed, timeout)
+    def __init__(self, port='/dev/ttyUSB0', speed=115200, timeout=1):
+        super(_1WIRE, self).__init__(port, speed, timeout)
 
-	def configure(self):
-		if not super(_1WIRE, self).configure():
-			return False
-		
-		if not self.enter_1wire():
-			return False
+    def configure(self):
+        if not super(_1WIRE, self).configure():
+            return False
+        
+        if not self.enter_1wire():
+            return False
 
-		return True
+        return True
 
-	def _1wire_reset(self):
-		self.port.write(b"\x02")
-		self.timeout(0.1)
-		return self.response(1)
+    def _1wire_reset(self):
+        self.port.write(b"\x02")
+        self.timeout(0.1)
+        return self.response(1)
 
-	def read_byte(self):
-		self.port.write(b"\x04")
-		self.timeout(0.1)
-		return self.response(1)
+    def read_byte(self):
+        self.port.write(b"\x04")
+        self.timeout(0.1)
+        return self.response(1)
 
-	def rom_search(self):
-		self.port.write(b"\x08")
-		self.timeout(0.1)
-		self.__group_response()
+    def rom_search(self):
+        self.port.write(b"\x08")
+        self.timeout(0.1)
+        self.__group_response()
 
-	def alarm_search(self):
-		self.port.write(b"\x09")
-		self.timeout(0.1)
-		self.__group_response()
+    def alarm_search(self):
+        self.port.write(b"\x09")
+        self.timeout(0.1)
+        self.__group_response()
 
-	def __group_response(self):
-		EOD = [0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]
-		if not self.response(): return 0
-		while 1:
-			data = self.port.read(8)
-			if data == EOD:
-				break
-			print data
+    def __group_response(self):
+        EOD = [0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]
+        if not self.response(): return 0
+        while 1:
+            data = self.port.read(8)
+            if data == EOD:
+                break
+            print data
 

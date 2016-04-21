@@ -27,8 +27,8 @@ from MonitorMenu import *
 from MonitorSyntax import *
 
 class MonitorCommand(Comm, MonitorMenu, MonitorSyntax):
-	def __init__(self, sp, speed=115200):
-		Comm.__init__(self, sp, speed)
-		MonitorMenu.__init__(self)
-		MonitorSyntax.__init__(self)
+    def __init__(self, sp, speed=115200):
+        Comm.__init__(self, sp, speed)
+        MonitorMenu.__init__(self)
+        MonitorSyntax.__init__(self)
 

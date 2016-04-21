@@ -40,21 +40,21 @@ from ..Monitor.Comm import Comm
 from enum import ControlChar
 
 class XComm(Comm):
-	def __init__(self, port="/dev/tty.usbserial-A7004qlY"):
-		Comm.__init__(self, port, speed=115200)
-		
-	def ack(self):
-		self.conn.write(ControlChar.ACK)
+    def __init__(self, port="/dev/tty.usbserial-A7004qlY"):
+        Comm.__init__(self, port, speed=115200)
+        
+    def ack(self):
+        self.conn.write(ControlChar.ACK)
 
-	def nak(self):
-		self.conn.write(ControlChar.NAK)
+    def nak(self):
+        self.conn.write(ControlChar.NAK)
 
-	def can(self):
-		self.conn.write(ControlChar.CAN)
+    def can(self):
+        self.conn.write(ControlChar.CAN)
 
-	def inbyte(self, timeout=1000): # timeout in ms
-		return self.conn.read(1)
+    def inbyte(self, timeout=1000): # timeout in ms
+        return self.conn.read(1)
 
-	def outbyte(self, byte):
-		self.conn.write(byte)
+    def outbyte(self, byte):
+        self.conn.write(byte)
 

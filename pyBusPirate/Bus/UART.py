@@ -21,21 +21,21 @@ along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 class DataBitsParityEnum:
-	_8N = 1
-	_8E = 2
-	_8O = 3
-	_9N = 4
+    _8N = 1
+    _8E = 2
+    _8O = 3
+    _9N = 4
 
 class ReceivePolarityEnum:
-	Idle1 = 1
-	Idle0 = 2
+    Idle1 = 1
+    Idle0 = 2
 
 class MacrosUART:
-	"""Built-in Macros for UART """
-	def __init__(self):
-		pass
-		
-	
+    """Built-in Macros for UART """
+    def __init__(self):
+        pass
+        
+    
 class UART:
-	pass
+    pass
 

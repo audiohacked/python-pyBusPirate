@@ -1,12 +1,12 @@
 from array import array
 
 def crc16(string, v=0):
-	""" Single-function interface, like gzip module's crc32
-	"""
-	s = array('H', string)
-	for b in s:
-		v = table[ (b^v) & 0xff] ^ (v >> 8)
-	return v
+    """ Single-function interface, like gzip module's crc32
+    """
+    s = array('H', string)
+    for b in s:
+        v = table[ (b^v) & 0xff] ^ (v >> 8)
+    return v
 
 # CRC-16 poly: p(x) = x**16 + x**15 + x**2 + 1
 # top bit implicit, reflected
