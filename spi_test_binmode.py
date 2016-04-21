@@ -22,12 +22,6 @@ along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 import sys, optparse
 from pyBusPirate.BinaryMode.SPI import *
 
-def read_list_data(size):
-    data = []
-    for i in range(size+1):
-        data.append(0)
-    return data
-
 def parse_prog_args():
     parser = optparse.OptionParser(usage="%prog [options] filename",
                                     version="%prog 1.0")
@@ -66,7 +60,7 @@ def parse_prog_args():
         sys.exit(1)
     else:
         return (options, args)
-    
+
 """ enter binary mode """
 if __name__ == '__main__':
     data = ""
@@ -77,7 +71,7 @@ if __name__ == '__main__':
     elif opt.command == "write":
         f=open(args[0], 'rb')
 
-    spi = SPI("/dev/tty.usbserial-A7004qlY", 115200)
+    spi = SPI("/dev/ttyUSB0", 115200)
 
     print "Entering binmode: ",
     if spi.BBmode():
@@ -92,7 +86,7 @@ if __name__ == '__main__':
     else:
         print "failed."
         sys.exit()
-        
+
     print "Configuring SPI."
     if spi.cfg_pins(PinCfg.POWER | PinCfg.CS | PinCfg.AUX):
         print "Failed to set SPI peripherals."
@@ -108,16 +102,16 @@ if __name__ == '__main__':
     if opt.command == "read":
         print "Reading EEPROM."
         spi.CS_Low()
-        spi.bulk_trans(5, [0xB, 0, 0, 0, 0])
+        spi.bulk_trans([0xB, 0, 0, 0, 0])
         for i in range((int(opt.flash_size)/16)):
-            data = spi.bulk_trans(16, read_list_data(16))
+            data = spi.bulk_trans(16)
             f.write(data)
         spi.CS_High()
 
     elif opt.command == "write":
         print "Writing EEPROM."
         spi.CS_Low()
-        spi.bulk_trans(4, [0xA, 0, 0, 0])
+        spi.bulk_trans([0xA, 0, 0, 0])
         for i in range((int(opt.flash_size)/16)):
             spi.bulk_trans(16, None)
         spi.CS_High()
@@ -125,7 +119,7 @@ if __name__ == '__main__':
     elif opt.command == "id":
         print "Reading Chip ID: ",
         spi.CS_Low()
-        d = spi.bulk_trans(4, [0x9F, 0, 0, 0])
+        d = spi.bulk_trans([0x9F, 0, 0, 0])
         spi.CS_High()
         for each in d[1:]:
             print "%02X " % ord(each),
@@ -140,4 +134,4 @@ if __name__ == '__main__':
     else:
         print "failed."
         sys.exit()
-        
+

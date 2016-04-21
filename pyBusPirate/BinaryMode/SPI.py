@@ -62,7 +62,7 @@ class SPI(BBIO):
     def configure(self):
         if not super(SPI, self).configure():
             return False
-        
+
         if not self.enter_SPI():
             return False
 
@@ -70,31 +70,25 @@ class SPI(BBIO):
 
     def CS_Low(self):
         self.port.write(b"\x02")
-        self.timeout(0.1)
         return self.response(1, True)
 
     def CS_High(self):
         self.port.write(b"\x03")
-        self.timeout(0.1)
         return self.response(1, True)
 
     def low_nibble(self, nibble):
         self.port.write(bytearray((0x20 | nibble,)))
-        self.timeout(0.1)
         return self.response(1, True)
 
     def high_nibble(self, nibble):
         self.port.write(bytearray((0x30 | nibble,)))
-        self.timeout(0.1)
         return self.response(1, True)
 
     def cfg_spi(self, spi_cfg):
         self.port.write(bytearray((0x80 | spi_cfg,)))
-        self.timeout(0.1)
         return self.response()
 
     def read_spi_cfg(self):
         self.port.write(b"\x90")
-        self.timeout(0.1)
         return self.response(1, True)
 

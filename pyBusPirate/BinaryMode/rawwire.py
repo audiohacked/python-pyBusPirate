@@ -65,7 +65,7 @@ class RawWire(BBIO):
     def configure(self):
         if not super(RawWire, self).configure():
             return False
-        
+
         if not self.enter_rawwire():
             return False
 
@@ -116,10 +116,10 @@ class RawWire(BBIO):
     def pic_write(self, byte_string):
         if byte_string == None: pass
         self.port.write(b"\xA4")
-        self.timeout(0.1)
+        self.timeout(0.1) #deprecated
         for i in range(2):
             self.port.write(chr(byte_string[i]))
-            self.timeout(0.1)
+            self.timeout(0.1) #deprecated
         data = self.response(byte_count+2, True)
         return data[1:]
 

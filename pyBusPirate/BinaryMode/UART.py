@@ -58,7 +58,7 @@ class UART(BBIO):
     def configure(self):
         if not super(UART, self).configure():
             return False
-        
+
         if not self.enter_UART():
             return False
 
@@ -68,7 +68,6 @@ class UART(BBIO):
         self.port.write(b"\x02")
         self.port.write(BRGH)
         self.port.write(BRGL)
-        self.timeout(0.1)
         return self.response()
 
     def begin_input(self):
@@ -76,20 +75,17 @@ class UART(BBIO):
 
     def end_input(self):
         self.port.write(b"\x05")
-        
+
     def enter_bridge_mode(self):
         self.port.write(b"\x0F")
-        self.timeout(0.1)
         return self.response(1, True)
-        
+
     def set_cfg(self, cfg):
         self.port.write(bytearray((0xC0 | cfg,)))
-        self.timeout(0.1)
         return self.response(1, True)
-        
+
     def read_cfg(self):
         self.port.write(b"\xD0")
-        self.timeout(0.1)
         return self.response(1, True)
-        
-    
+
+

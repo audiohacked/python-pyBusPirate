@@ -42,7 +42,7 @@ class _1WIRE(BBIO):
     def configure(self):
         if not super(_1WIRE, self).configure():
             return False
-        
+
         if not self.enter_1wire():
             return False
 
@@ -50,22 +50,18 @@ class _1WIRE(BBIO):
 
     def _1wire_reset(self):
         self.port.write(b"\x02")
-        self.timeout(0.1)
         return self.response(1)
 
     def read_byte(self):
         self.port.write(b"\x04")
-        self.timeout(0.1)
         return self.response(1)
 
     def rom_search(self):
         self.port.write(b"\x08")
-        self.timeout(0.1)
         self.__group_response()
 
     def alarm_search(self):
         self.port.write(b"\x09")
-        self.timeout(0.1)
         self.__group_response()
 
     def __group_response(self):
@@ -75,5 +71,5 @@ class _1WIRE(BBIO):
             data = self.port.read(8)
             if data == EOD:
                 break
-            print data
+            print(data)
 
