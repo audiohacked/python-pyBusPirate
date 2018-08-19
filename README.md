@@ -1,4 +1,4 @@
 pyBusPirate
 ===========
 
-Library for the Hack-A-Day Bus Pirate.
+Library for the [Dangerous Prototypes Bus Pirate](http://dangerousprototypes.com/docs/Bus_Pirate).
