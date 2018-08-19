@@ -1,6 +1,7 @@
 """ SPI class """
 
 from enum import Enum
+
 from buspirate.base import BusPirate
 
 
@@ -14,12 +15,6 @@ class CsSniffTrigger(Enum):
     """ Enum for Chip Select Sniffer Trigger """
     LOW = 0b10
     ALL = 0b01
-
-
-class PinConfiguration(Enum):
-    """ Enum for Peripherial Configuration """
-    DISABLE = 0b0
-    ENABLE = 0b1
 
 
 class SpiSpeed(Enum):
@@ -113,49 +108,6 @@ class SPI(BusPirate):
         self.write(0x0C|trigger)
         return self.read(1) == 0x01
 
-    def bulk_transfer_start(self, transfer: int = 16) -> bool:
-        """
-        SPI Transfer
-
-        :param transfer: The number of bytes to bulk transfer (1 to 16 bytes)
-        :type transfer: int.
-
-        :return: returns Success or Failure
-        :rtype: bool.
-        """
-        self.write(0x10|(transfer-1))
-        return self.read(1) == 0x01
-
-    def configure_peripherials(self, power: int = PinConfiguration.DISABLE,
-                               pull_ups: int = PinConfiguration.DISABLE,
-                               aux: int = PinConfiguration.DISABLE,
-                               chip_select: int = PinConfiguration.DISABLE) -> bool:
-        """
-        SPI Configure Peripherial Pins
-
-        :param power: The Pin Configuration for Power Pins
-        :type power: int.
-
-        :param pull_ups: The Pin Configuration for Pull Up Pins
-        :type pull_ups: int.
-
-        :param aux: The Pin Configuration for AUX pin
-        :type aux: int.
-
-        :param chip_select: The Pin Configuration for Chip Select Pin
-        :type chip_select: int.
-
-        :return: returns Success or Failure
-        :rtype: bool.
-        """
-        data = 0
-        data += power<<3
-        data += pull_ups<<2
-        data += aux<<1
-        data += chip_select
-        self.write(0x40|data)
-        return self.read(1) == 0x01
-
     def spi_speed(self, spi_speed: int = SpiSpeed.SPEED_30KHZ) -> bool:
         """
         SPI Speed Configuration
@@ -169,7 +121,8 @@ class SPI(BusPirate):
         self.write(0x60|spi_speed)
         return self.read(1) == 0x01
 
-    def spi_configuration(self, pin_output: int = SpiConfiguration.PinOutput.HIZ,
+    def spi_configuration(self,
+                          pin_output: int = SpiConfiguration.PinOutput.HIZ,
                           clock_phase: int = SpiConfiguration.ClockPhase.LOW,
                           clock_edge: int = SpiConfiguration.ClockEdge.IDLE_TO_ACTIVE,
                           sample_time: int = SpiConfiguration.SampleTime.MIDDLE) -> bool:
@@ -199,17 +152,43 @@ class SPI(BusPirate):
         self.write(0x80|spi_configuration)
         return self.read(1) == 0x01
 
-    def write_then_read(self):
+    def write_then_read(self,
+                        write_count: int = 0,
+                        read_count: int = 0,
+                        write_data: bytearray = None) -> bytearray:
         """
         SPI Write then Read
-        """
-        pass
 
-    def write_then_read_no_cs(self):
+        :param write_count: The number of bytes to write
+        :type write_count: int.
+        :param read_count: The number of bytes to read
+        :type read_count: int.
+        :param write_data: The data bytes to write
+        :type write_data: bytearray.
+
+        :return: returns data read from SPI
+        :rtype: bytearray
+        """
+        return super()._write_then_read(0x04, write_count, read_count, write_data)
+
+    def write_then_read_with_no_cs(self,
+                                   write_count: int = 0,
+                                   read_count: int = 0,
+                                   write_data: bytearray = None) -> bool:
         """
         SPI Write then Read with No Chip Select transistion
+
+        :param write_count: The number of bytes to write
+        :type write_count: int.
+        :param read_count: The number of bytes to read
+        :type read_count: int.
+        :param write_data: The data bytes to write
+        :type write_data: bytearray.
+
+        :return: returns data read from SPI
+        :rtype: bytearray
         """
-        pass
+        return super()._write_then_read(0x05, write_count, read_count, write_data)
 
 
 if __name__ == '__main__':
