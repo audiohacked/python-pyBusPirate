@@ -29,6 +29,7 @@ REQUIRED = [
 # What packages are optional?
 EXTRAS = {
     'docs': ['sphinx'],
+    'tests': ['dummyserial'],
 }
 
 # The rest you shouldn't have to touch too much :)
@@ -88,7 +89,7 @@ class UploadCommand(Command):
         self.status('Pushing git tags…')
         os.system('git tag v{0}'.format(about['__version__']))
         os.system('git push --tags')
-        
+
         sys.exit()
 
 
@@ -116,6 +117,7 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: Implementation :: PyPy'
     ],
+    test_suite="tests",
     cmdclass={
         'upload': UploadCommand,
         'build_sphinx': BuildDoc,
@@ -129,5 +131,4 @@ setup(
                 'build_dir': ('setup.py', 'docs/build'),
             }
     },
-    
 )
