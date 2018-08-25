@@ -29,7 +29,7 @@ REQUIRED = [
 # What packages are optional?
 EXTRAS = {
     'docs': ['sphinx'],
-    'tests': ['dummyserial'],
+    'tests': ['coverage'],
 }
 
 # The rest you shouldn't have to touch too much :)
@@ -93,6 +93,22 @@ class UploadCommand(Command):
         sys.exit()
 
 
+class CoverageCommand(Command):
+    """
+    Support setup.py coverage.py
+    """
+    
+    description = "Run and Report Unit Test Coverage."
+    user_options = []
+    
+    def initialize_options(self): pass
+    def finalize_options(self): pass 
+    def run(self):
+        import subprocess
+        subprocess.call(['coverage', 'run', '-m', 'unittest', 'discover', '-v'])
+        subprocess.call(['coverage', 'report', '-m'])
+
+
 # Where the magic happens:
 setup(
     name=NAME,
@@ -121,6 +137,7 @@ setup(
     cmdclass={
         'upload': UploadCommand,
         'build_sphinx': BuildDoc,
+        'coverage': CoverageCommand,
     },
     command_options={
             'build_sphinx': {

@@ -1,28 +1,29 @@
 """ BusPirate Base class """
 
-from enum import Enum
+from enum import Enum, IntEnum
 
 import serial
 
 
-class PinConfiguration(Enum):
+class PinConfiguration(IntEnum):
     """ Enum for Peripherial Configuration """
     DISABLE = 0b0
     ENABLE = 0b1
 
 
-class BusPirate(serial.Serial):
+class BusPirate(object):
     """ Base Class for BitBanging on BusPirate """
     def __init__(self, port: str,
                  baudrate: int = 115200,
-                 bytesize: int = serial.EIGHTBITS,
-                 parity: int = serial.PARITY_NONE,
-                 stopbits: int = serial.STOPBITS_ONE,
+                 # bytesize: int = serial.EIGHTBITS,
+                 # parity: int = serial.PARITY_NONE,
+                 # stopbits: int = serial.STOPBITS_ONE,
                  timeout: float = 0.10,
-                 xonxoff: bool = False,
-                 rtscts: bool = False,
-                 dsrdtr: bool = False,
-                 write_timeout: float = 0.10) -> None:
+                 # xonxoff: bool = False,
+                 # rtscts: bool = False,
+                 # dsrdtr: bool = False,
+                 write_timeout: float = 0.10,
+                 serial_class: object = serial.Serial) -> None:
         """
         Init function that also executes the enter function
 
@@ -49,11 +50,16 @@ class BusPirate(serial.Serial):
 
         :return: returns nothing
         """
-        super().__init__(**locals())
-        self.open()
+        self.pass_to_super = locals()
+        # self.pass_to_super.pop('self')
+        # self.pass_to_super.pop('serial_class')
+        # self.pass_to_super.pop('__class__')
+        # super(BusPirate, self).__init__(**self.pass_to_super)
+        self.serial = serial_class(**self.pass_to_super)
+        self.serial.open()
         self.enter()
 
-    def send(self, data: bytearray = None) -> None:
+    def write(self, data: bytearray = None) -> None:
         """
         Send Data to BusPirate
 
@@ -62,9 +68,9 @@ class BusPirate(serial.Serial):
 
         :return: returns nothing
         """
-        self.write(data)
+        self.serial.write(data)
 
-    def recv(self, count: int = 1) -> bool:
+    def read(self, count: int = 1) -> bool:
         """
         Receive Data from BusPirate
 
@@ -74,7 +80,7 @@ class BusPirate(serial.Serial):
         :return: returns bytes of data
         :rtype: bytearray
         """
-        return self.read(count)
+        return self.serial.read(count)
 
     def enter(self) -> bool:
         """
@@ -141,7 +147,7 @@ class BusPirate(serial.Serial):
         :rtype: bool.
         """
         data = 0
-        data += power<<3
+        data += int(power)<<3
         data += pull_ups<<2
         data += aux<<1
         data += chip_select
@@ -186,7 +192,7 @@ class BusPirate(serial.Serial):
         recv_buffer = self.read(read_count+1)
         if recv_buffer[0] is 0x01:
             if len(recv_buffer[1:]) is read_count:
-                return recv_buffer[1:]
+                return bytearray(recv_buffer[1:])
         return bytearray()
 
 
