@@ -1,23 +1,23 @@
 """ SPI class """
 
-from enum import Enum
+from enum import IntEnum
 
 from buspirate.base import BusPirate
 
 
-class CsLevel(Enum):
+class CsLevel(IntEnum):
     """ Enum for Chip Select Level """
     LOW = 0b0
     HIGH = 0b1
 
 
-class CsSniffTrigger(Enum):
+class CsSniffTrigger(IntEnum):
     """ Enum for Chip Select Sniffer Trigger """
     LOW = 0b10
     ALL = 0b01
 
 
-class SpiSpeed(Enum):
+class SpiSpeed(IntEnum):
     """ Enum for SPI Speeds """
     SPEED_30KHZ = 0b000
     SPEED_125KHZ = 0b001
@@ -31,41 +31,59 @@ class SpiSpeed(Enum):
 
 class SpiConfiguration(object):
     """ SPI Configuration Enum Base """
-    def __str__(self) -> str:
-        """
-        Return string of the class
+    # def __getattr__(self, key):
+    #     """
+    #     Return an attribute of the class (fallback)
+    #
+    #     :return: returns contents of class
+    #     :rtype: str.
+    #     """
+    #     pass
+    #
+    # def __getattribute__(self, key):
+    #     """
+    #     Return an attribute of the class
+    #
+    #     :return: returns contents of class
+    #     :rtype: str.
+    #     """
+    #     pass
+    #
+    # def __str__(self) -> str:
+    #     """
+    #     Return string of the class
+    #
+    #     :return: returns contents of class
+    #     :rtype: str.
+    #     """
+    #     return str(self.__dict__)
+    #
+    # def __eq__(self, other: object = None) -> bool:
+    #     """
+    #     Compare SPI Configurations
+    #
+    #     :return: returns a boolean
+    #     :rtype: bool.
+    #     """
+    #     return self == other
 
-        :return: returns contents of class
-        :rtype: str.
-        """
-        return str(self.__dict__)
-
-    def __eq__(self, other: object = None) -> bool:
-        """
-        Compare SPI Configurations
-
-        :return: returns a boolean
-        :rtype: bool.
-        """
-        return self == other
-
-    class PinOutput(Enum):
+    class PinOutput(IntEnum):
         """ Enum for Pin Output """
         HIZ = 0b0
         PIN_HIZ = 0b0
         V3P3 = 0b1
         PIN_3P3V = 0b1
 
-    class ClockPhase(Enum):
+    class ClockPhase(IntEnum):
         """ Enum for Clock Phase """
         LOW = 0b0
 
-    class ClockEdge(Enum):
+    class ClockEdge(IntEnum):
         """ Enum for Clock Edge """
         IDLE_TO_ACTIVE = 0b0
         ACTIVE_TO_IDLE = 0b1
 
-    class SampleTime(Enum):
+    class SampleTime(IntEnum):
         """ Enum for Sample Time """
         MIDDLE = 0b0
 

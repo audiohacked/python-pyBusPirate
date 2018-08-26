@@ -1,2 +1,6 @@
+[MESSAGES CONTROL]
+disable=R0801
+# disable=R0801,R0205
+
 [DESIGN]
-max-parents=20
+# max-parents=20

@@ -1,11 +1,11 @@
 """ I2C class """
 
-from enum import Enum
+from enum import IntEnum
 
 from buspirate.base import BusPirate
 
 
-class I2CSpeed(Enum):
+class I2CSpeed(IntEnum):
     """ Enum for I2C Speeds """
     SPEED_5KHZ = 0b000
     SPEED_50KHZ = 0b001
@@ -13,7 +13,7 @@ class I2CSpeed(Enum):
     SPEED_400KHZ = 0b011
 
 
-class I2CExtendAux(Enum):
+class I2CExtendAux(IntEnum):
     """ Enum for I2C Extend Aux """
     LOW = 0x00
     HIGH = 0x01

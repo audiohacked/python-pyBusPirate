@@ -1,6 +1,6 @@
 """ BusPirate Base class """
 
-from enum import Enum, IntEnum
+from enum import IntEnum
 
 import serial
 
@@ -22,8 +22,7 @@ class BusPirate(object):
                  # xonxoff: bool = False,
                  # rtscts: bool = False,
                  # dsrdtr: bool = False,
-                 write_timeout: float = 0.10,
-                 serial_class: object = serial.Serial) -> None:
+                 write_timeout: float = 0.10) -> None:
         """
         Init function that also executes the enter function
 
@@ -55,7 +54,7 @@ class BusPirate(object):
         # self.pass_to_super.pop('serial_class')
         # self.pass_to_super.pop('__class__')
         # super(BusPirate, self).__init__(**self.pass_to_super)
-        self.serial = serial_class(**self.pass_to_super)
+        self.serial = serial.Serial(**self.pass_to_super)
         self.serial.open()
         self.enter()
 
