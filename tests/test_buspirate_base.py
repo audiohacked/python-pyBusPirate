@@ -3,6 +3,7 @@ Unit Tests for BusPirate base class
 """
 import unittest
 from unittest import mock
+
 from buspirate.base import BusPirate
 
 

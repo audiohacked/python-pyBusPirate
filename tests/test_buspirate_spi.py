@@ -3,6 +3,7 @@ Unit Tests for BusPirate SPI class
 """
 import unittest
 from unittest import mock
+
 from buspirate import spi
 
 
