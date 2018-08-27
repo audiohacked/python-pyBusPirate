@@ -47,7 +47,7 @@ class BusPirate(object):
         :param write_timeout: The serial write timeout (default is 0.10 seconds)
         :type write_timeout: float.
 
-        :return: returns nothing
+        :returns: returns nothing
         """
         self.pass_to_super = locals()
         # self.pass_to_super.pop('self')
@@ -58,26 +58,26 @@ class BusPirate(object):
         self.serial.open()
         self.enter()
 
-    def write(self, data: bytearray = None) -> None:
+    def write(self, data: bytes = None) -> None:
         """
         Send Data to BusPirate
 
         :param data: The data to send over serial
-        :type data: bytearray
+        :type data: bytes
 
-        :return: returns nothing
+        :returns: returns nothing
         """
         self.serial.write(data)
 
-    def read(self, count: int = 1) -> bool:
+    def read(self, count: int = 1) -> bytes:
         """
         Receive Data from BusPirate
 
         :param count: The number of bytes to receive over serial
         :type count: int.
 
-        :return: returns bytes of data
-        :rtype: bytearray
+        :returns: returns bytes of data
+        :rtype: bytes
         """
         return self.serial.read(count)
 
@@ -85,7 +85,7 @@ class BusPirate(object):
         """
         Enter BitBang Mode on the BusPirate
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool.
         """
         for _ in range(20):
@@ -96,7 +96,7 @@ class BusPirate(object):
         """
         Get Version and Mode
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool
         """
         self.write(0x01)
@@ -106,7 +106,7 @@ class BusPirate(object):
         """
         Reset BitBang Mode
 
-        :return: returns nothing
+        :returns: returns nothing
         """
         self.write(0x0F)
 
@@ -142,7 +142,7 @@ class BusPirate(object):
         :param chip_select: The Pin Configuration for Chip Select Pin
         :type chip_select: int.
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool.
         """
         data = 0
@@ -153,23 +153,23 @@ class BusPirate(object):
         self.write(0x40|data)
         return self.read(1) == 0x01
 
-    def bulk_write(self, count: int = 16, data: bytearray = None) -> bytearray:
+    def bulk_write(self, count: int = 16, data: bytes = None) -> bytes:
         """
         Send Bulk Data for Write
         """
         self.write(0x10|count-1)
         if self.read(1) == 0x01:
             if data is None:
-                data = bytearray(count)
+                data = bytes(count)
             self.write(data)
             return self.read(count)
-        return bytearray()
+        return bytes()
 
     def _write_then_read(self,
                          command: int = 0,
                          write_count: int = 0,
                          read_count: int = 0,
-                         write_data: bytearray = None) -> bytearray:
+                         write_data: bytes = None) -> bytes:
         """
         Write then Read; used by SPI, I2C, etc
 
@@ -180,19 +180,19 @@ class BusPirate(object):
         :param read_count: The number of bytes to read
         :type read_count: int.
         :param write_data: The data bytes to write
-        :type write_data: bytearray.
+        :type write_data: bytes.
 
-        :return: returns data read from Bus
-        :rtype: bytearray
+        :returns: returns data read from Bus
+        :rtype: bytes
         """
         assert len(write_data) == write_count, "Given data has incorrect length!"
-        send_buffer: bytearray = [command, write_count, read_count, write_data]
+        send_buffer: bytes = [command, write_count, read_count, write_data]
         self.write(send_buffer)
         recv_buffer = self.read(read_count+1)
         if recv_buffer[0] is 0x01:
             if len(recv_buffer[1:]) is read_count:
-                return bytearray(recv_buffer[1:])
-        return bytearray()
+                return recv_buffer[1:]
+        return bytes()
 
 
 if __name__ == '__main__':

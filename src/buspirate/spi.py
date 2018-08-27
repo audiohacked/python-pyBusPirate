@@ -35,7 +35,7 @@ class SpiConfiguration(object):
     #     """
     #     Return an attribute of the class (fallback)
     #
-    #     :return: returns contents of class
+    #     :returns: returns contents of class
     #     :rtype: str.
     #     """
     #     pass
@@ -44,7 +44,7 @@ class SpiConfiguration(object):
     #     """
     #     Return an attribute of the class
     #
-    #     :return: returns contents of class
+    #     :returns: returns contents of class
     #     :rtype: str.
     #     """
     #     pass
@@ -53,7 +53,7 @@ class SpiConfiguration(object):
     #     """
     #     Return string of the class
     #
-    #     :return: returns contents of class
+    #     :returns: returns contents of class
     #     :rtype: str.
     #     """
     #     return str(self.__dict__)
@@ -62,7 +62,7 @@ class SpiConfiguration(object):
     #     """
     #     Compare SPI Configurations
     #
-    #     :return: returns a boolean
+    #     :returns: returns a boolean
     #     :rtype: bool.
     #     """
     #     return self == other
@@ -94,7 +94,7 @@ class SPI(BusPirate):
         """
         Enter BitBang Mode on the BusPirate
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool.
         """
         self.write(0x01)
@@ -107,7 +107,7 @@ class SPI(BusPirate):
         :param level: The Active Level for SPI Chip Select
         :type level: int.
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool.
         """
         self.write(0x02|level)
@@ -120,7 +120,7 @@ class SPI(BusPirate):
         :param trigger: The trigger type for SPI Sniffer
         :type trigger: int.
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool.
         """
         self.write(0x0C|trigger)
@@ -133,7 +133,7 @@ class SPI(BusPirate):
         :param spi_speed: The SPI Clock Rate
         :type spi_speed: int.
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool
         """
         self.write(0x60|spi_speed)
@@ -159,7 +159,7 @@ class SPI(BusPirate):
         :param sample_time: The Pin Configuration for Chip Select Pin
         :type sample_time: int.
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool.
         """
         spi_configuration = 0
@@ -173,7 +173,7 @@ class SPI(BusPirate):
     def write_then_read(self,
                         write_count: int = 0,
                         read_count: int = 0,
-                        write_data: bytearray = None) -> bytearray:
+                        write_data: bytes = None) -> bytes:
         """
         SPI Write then Read
 
@@ -182,17 +182,17 @@ class SPI(BusPirate):
         :param read_count: The number of bytes to read
         :type read_count: int.
         :param write_data: The data bytes to write
-        :type write_data: bytearray.
+        :type write_data: bytes.
 
-        :return: returns data read from SPI
-        :rtype: bytearray
+        :returns: returns data read from SPI
+        :rtype: bytes
         """
         return super()._write_then_read(0x04, write_count, read_count, write_data)
 
     def write_then_read_with_no_cs(self,
                                    write_count: int = 0,
                                    read_count: int = 0,
-                                   write_data: bytearray = None) -> bool:
+                                   write_data: bytes = None) -> bool:
         """
         SPI Write then Read with No Chip Select transistion
 
@@ -201,10 +201,10 @@ class SPI(BusPirate):
         :param read_count: The number of bytes to read
         :type read_count: int.
         :param write_data: The data bytes to write
-        :type write_data: bytearray.
+        :type write_data: bytes.
 
-        :return: returns data read from SPI
-        :rtype: bytearray
+        :returns: returns data read from SPI
+        :rtype: bytes
         """
         return super()._write_then_read(0x05, write_count, read_count, write_data)
 

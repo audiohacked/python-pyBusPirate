@@ -8,7 +8,7 @@ class JTAG(BusPirate):
         """
         Enter JTAG Mode on the BusPirate
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         """
         self.write(0x06)
         return self.read(4) == "1W01"

@@ -8,7 +8,7 @@ class Voltage(BusPirate):
         """
         Voltage Take Once
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool.
         """
         self.write(0x14)
@@ -18,7 +18,7 @@ class Voltage(BusPirate):
         """
         Voltage Continuous
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool.
         """
         self.write(0x15)
@@ -31,7 +31,7 @@ class SelfTests(BusPirate):
         """
         Short Self-Tests
 
-        :return: returns nothing
+        :returns: returns nothing
         """
         self.write(0x10)
 
@@ -39,7 +39,7 @@ class SelfTests(BusPirate):
         """
         Short Self-Tests
 
-        :return: returns nothing
+        :returns: returns nothing
         """
         self.write(0x11)
 
@@ -47,7 +47,7 @@ class SelfTests(BusPirate):
         """
         Exit from Self-Tests
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool.
         """
         self.write(0xff)
@@ -60,7 +60,7 @@ class PWM(BusPirate):
         """
         PWM Setup
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool.
         """
         self.write(0x12)
@@ -70,7 +70,7 @@ class PWM(BusPirate):
         """
         PWM Clear
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool.
         """
         self.write(0x13)
@@ -80,7 +80,7 @@ class PWM(BusPirate):
         """
         PWM Disable
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool.
         """
         self.write(0x13)
@@ -93,7 +93,7 @@ class Frequency(BusPirate):
         """
         Frequency Disable
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool.
         """
         self.write(0x16)

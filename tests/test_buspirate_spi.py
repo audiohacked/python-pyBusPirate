@@ -48,11 +48,11 @@ class BusPirateSpiTest(unittest.TestCase):
         data = [idx for idx in range(1, data_len+1)]
         self.bus_pirate.serial.read.return_value = [0x01] + data
         result = self.bus_pirate.write_then_read(data_len, data_len, data)
-        self.assertEqual(result, bytearray(data))
+        self.assertEqual(result, data)
 
     def test_write_then_read_with_no_cs(self):
         data_len = 128
         data = [idx for idx in range(1, data_len+1)]
         self.bus_pirate.serial.read.return_value = [0x01] + data
         result = self.bus_pirate.write_then_read_with_no_cs(data_len, data_len, data)
-        self.assertEqual(result, bytearray(data))
+        self.assertEqual(result, data)

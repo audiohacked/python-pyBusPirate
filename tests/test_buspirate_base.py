@@ -41,33 +41,33 @@ class BusPirateTest(unittest.TestCase):
         self.assertEqual(self.bus_pirate.configure_peripherials(), True)
 
     def test_bulk_write(self):
-        self.bus_pirate.serial.read.side_effect = [0x01, bytearray([idx for idx in range(1, 17)])]
         data = [idx for idx in range(1, 17)]
+        self.bus_pirate.serial.read.side_effect = [0x01, data]
         result = self.bus_pirate.bulk_write(16, data)
-        self.assertEqual(result, bytearray(data))
+        self.assertEqual(result, data)
 
     def test_bulk_write_fail(self):
-        self.bus_pirate.serial.read.side_effect = [0x00, bytearray([idx for idx in range(1, 17)])]
         data = [idx for idx in range(1, 17)]
+        self.bus_pirate.serial.read.side_effect = [0x00, data]
         result = self.bus_pirate.bulk_write(16, data)
-        self.assertEqual(result, bytearray())
+        self.assertEqual(result, bytes())
 
     def test_bulk_write_data_is_none(self):
-        self.bus_pirate.serial.read.side_effect = [0x01, bytearray([idx for idx in range(1, 17)])]
         data = [idx for idx in range(1, 17)]
+        self.bus_pirate.serial.read.side_effect = [0x01, data]
         result = self.bus_pirate.bulk_write(16, None)
-        self.assertEqual(result, bytearray(data))
+        self.assertEqual(result, data)
 
     def test__write_then_read(self):
         data = [idx for idx in range(1, 17)]
         self.bus_pirate.serial.read.return_value = [0x01] + data
         result = self.bus_pirate._write_then_read(command=0x04, write_count=16,
                                                   read_count=len(data), write_data=data)
-        self.assertEqual(result, bytearray(data))
+        self.assertEqual(result, data)
 
     def test__write_then_read_fail(self):
         data = [idx for idx in range(1, 17)]
         self.bus_pirate.serial.read.return_value = [0x00] + data
         result = self.bus_pirate._write_then_read(command=0x04, write_count=16,
                                                   read_count=len(data), write_data=data)
-        self.assertEqual(result, bytearray())
+        self.assertEqual(result, bytes())

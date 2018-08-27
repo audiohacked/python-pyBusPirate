@@ -29,7 +29,7 @@ class I2C(BusPirate):
         """
         Exit to BitBang mode
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool
         """
         self.write(0x00)
@@ -39,7 +39,7 @@ class I2C(BusPirate):
         """
         Get Version and Mode
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool
         """
         self.write(0x01)
@@ -49,7 +49,7 @@ class I2C(BusPirate):
         """
         Enter I2C Mode on the BusPirate
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool
         """
         self.write(0x02)
@@ -59,7 +59,7 @@ class I2C(BusPirate):
         """
         Send I2C Start bit
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool
         """
         self.write(0x02)
@@ -69,7 +69,7 @@ class I2C(BusPirate):
         """
         Send I2C Stop bit
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool
         """
         self.write(0x03)
@@ -79,7 +79,7 @@ class I2C(BusPirate):
         """
         Read I2C Byte
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool
         """
         self.write(0x04)
@@ -89,7 +89,7 @@ class I2C(BusPirate):
         """
         Send I2C ACK bit
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool
         """
         self.write(0x06)
@@ -99,7 +99,7 @@ class I2C(BusPirate):
         """
         Send I2C NACK bit
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool
         """
         self.write(0x07)
@@ -109,7 +109,7 @@ class I2C(BusPirate):
         """
         Sniff I2C Bus
 
-        :return: returns nothing
+        :returns: returns nothing
         """
         self.write(0x0F)
 
@@ -128,7 +128,7 @@ class I2C(BusPirate):
         :param i2c_speed: The SPI Clock Rate
         :type i2c_speed: int.
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool.
         """
         self.write(0x60|i2c_speed)
@@ -137,7 +137,7 @@ class I2C(BusPirate):
     def write_then_read(self,
                         write_count: int = 0,
                         read_count: int = 0,
-                        write_data: bytearray = None) -> bytearray:
+                        write_data: bytes = None) -> bytes:
         """
         I2C Write then Read
 
@@ -146,10 +146,10 @@ class I2C(BusPirate):
         :param read_count: The number of bytes to read
         :type read_count: int.
         :param write_data: The data bytes to write
-        :type write_data: bytearray.
+        :type write_data: bytes.
 
-        :return: returns data read from SPI
-        :rtype: bytearray
+        :returns: returns data read from SPI
+        :rtype: bytes
         """
         return super()._write_then_read(0x08, write_count, read_count, write_data)
 
@@ -160,10 +160,10 @@ class I2C(BusPirate):
         :param command: The Aux Config Command to send
         :type command: int
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         :rtype: bool.
         """
-        send_buffer: bytearray = [0x09, command]
+        send_buffer: bytes = [0x09, command]
         self.write(send_buffer)
         return self.read(1) == 0x01
 

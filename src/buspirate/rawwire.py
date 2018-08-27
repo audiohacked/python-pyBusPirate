@@ -8,7 +8,7 @@ class RawWire(BusPirate):
         """
         Enter BitBang Mode on the BusPirate
 
-        :return: returns Success or Failure
+        :returns: returns Success or Failure
         """
         self.write(0x05)
         return self.read(4) == "RAW1"

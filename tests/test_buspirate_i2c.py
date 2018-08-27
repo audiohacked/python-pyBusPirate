@@ -52,6 +52,13 @@ class BusPirateI2CTest(unittest.TestCase):
         self.bus_pirate.serial.read.return_value = 0x01
         self.assertEqual(self.bus_pirate.sniff(), None)
 
+    def test_i2c_bulk_write(self):
+        read_data = [0x00 for idx in range(1, 17)]
+        write_data = [idx for idx in range(1, 17)]
+        self.bus_pirate.serial.read.side_effect = [0x01, read_data]
+        result = self.bus_pirate.bulk_write(16, write_data)
+        self.assertEqual(result, read_data)
+
     def test_pullup_voltage_select(self):
         self.assertEqual(self.bus_pirate.pullup_voltage_select(), None)
 
@@ -64,7 +71,7 @@ class BusPirateI2CTest(unittest.TestCase):
         data = [idx for idx in range(1, data_len+1)]
         self.bus_pirate.serial.read.return_value = [0x01] + data
         result = self.bus_pirate.write_then_read(data_len, data_len, data)
-        self.assertEqual(result, bytearray(data))
+        self.assertEqual(result, data)
 
     def test_extend_aux(self):
         self.bus_pirate.serial.read.return_value = 0x01
