@@ -146,7 +146,7 @@ class BusPirate(object):
         :rtype: bool.
         """
         data = 0
-        data += int(power)<<3
+        data += power<<3
         data += pull_ups<<2
         data += aux<<1
         data += chip_select
@@ -157,6 +157,8 @@ class BusPirate(object):
         """
         Send Bulk Data for Write
         """
+        if count == 0 or count > 16:
+            raise ValueError
         self.write(0x10|count-1)
         if self.read(1) == 0x01:
             if data is None:

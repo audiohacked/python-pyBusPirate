@@ -119,7 +119,7 @@ class I2C(BusPirate):
 
         Unimplmented!
         """
-        pass
+        raise NotImplementedError
 
     def i2c_speed(self, i2c_speed: int = I2CSpeed.SPEED_5KHZ):
         """
