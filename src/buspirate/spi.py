@@ -121,13 +121,15 @@ class SPI(BusPirate):
 
     @property
     def cs(self):
+        """ Chip Select Property Getter """
         return self._cs
 
     @cs.setter
     def cs(self, value):
+        """ Chip Select Property Setter """
         self._cs = value
         self.chip_select(value)
-        
+
     def chip_select(self, level: int = CsLevel.LOW) -> bool:
         """
         SPI Chip Select
@@ -156,13 +158,15 @@ class SPI(BusPirate):
 
     @property
     def speed(self):
+        """ Speed Property Getter """
         return self._speed
 
     @speed.setter
     def speed(self, value):
+        """ Speed Property Setter """
         self._speed = value
         return self.spi_speed(value)
-        
+
     def spi_speed(self, spi_speed: int = SpiSpeed.SPEED_30KHZ) -> bool:
         """
         SPI Speed Configuration
@@ -178,17 +182,19 @@ class SPI(BusPirate):
 
     @property
     def config(self):
+        """ Pin Config Property Getter """
         return self._config
 
     @config.setter
     def config(self, value):
+        """ Ping Config Property Setter """
         self._config = value
         pin_outputs = value & 0b1000
         clock_phase = value & 0b0100
         clock_edges = value & 0b0010
         sampletimes = value & 0b0001
         return self.spi_configuration(pin_outputs, clock_phase, clock_edges, sampletimes)
-        
+
     def spi_configuration(self,
                           pin_output: int = SpiConfiguration.PinOutput.HIZ,
                           clock_phase: int = SpiConfiguration.ClockPhase.LOW,

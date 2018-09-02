@@ -148,14 +148,16 @@ class I2C(BusPirate):
 
     @property
     def speed(self):
+        """ Speed Property Getter """
         return self._speed
 
 
     @speed.setter
     def speed(self, value):
+        """ Speed Property Setter """
         self._speed = value
         return self.i2c_speed(value)
-        
+
     def i2c_speed(self, i2c_speed: int = I2CSpeed.SPEED_5KHZ):
         """
         SPI Speed Configuration

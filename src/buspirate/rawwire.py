@@ -71,9 +71,9 @@ class RawWireConfiguration(object):
 
     class PinOutput(IntEnum):
         """ Enum for Pin Output """
-        HIZ  = 0b0000
+        HIZ = 0b0000
         V3P3 = 0b1000
-        PIN_HIZ  = 0b0000
+        PIN_HIZ = 0b0000
         PIN_3P3V = 0b1000
 
     class WireProtocol(IntEnum):
@@ -279,10 +279,12 @@ class RawWire(BusPirate):
 
     @property
     def speed(self):
+        """ Speed Property Getter """
         return self._speed
-        
+
     @speed.setter
     def speed(self, value):
+        """ Speed Property Setter """
         self._speed = value
         self.rawwire_speed(value)
 
@@ -302,16 +304,18 @@ class RawWire(BusPirate):
 
     @property
     def config(self):
+        """ Configuration Property Getter """
         return self._config
 
     @config.setter
     def config(self, value):
+        """ Configuration Property Setter """
         self._config = value
         p_output = value & 0b1000
         protocol = value & 0b0100
         bitorder = value & 0b0010
         return self.rawwire_config(p_output, protocol, bitorder)
-        
+
     def rawwire_config(self,
                        pin_output: int = RawWireConfiguration.PinOutput.HIZ,
                        wire_protocol: int = RawWireConfiguration.WireProtocol.PROTOCOL_2WIRE,

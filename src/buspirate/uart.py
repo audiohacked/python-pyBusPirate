@@ -117,13 +117,15 @@ class UART(BusPirate):
 
     @property
     def speed(self):
+        """ Speed Property Getter """
         return self._speed
 
     @speed.setter
     def speed(self, value):
+        """ Speed Property Setter """
         self._speed = value
-        return self.spi_speed(value)
-        
+        return self.uart_speed(value)
+
     def uart_speed(self, baudrate: int = UartSpeed.BAUD_115200) -> bool:
         """
         Set UART Speed
@@ -139,17 +141,19 @@ class UART(BusPirate):
 
     @property
     def config(self):
+        """ Configuration Property Getter """
         return self._config
 
     @config.setter
     def config(self, value):
+        """ Configuration Property Setter """
         self._config = value
         pin_outputs = value & 0b1000
         data_parity = value & 0b0100
         uastop_bits = value & 0b0010
         rx_polarity = value & 0b0001
         return self.uart_configuration(pin_outputs, data_parity, uastop_bits, rx_polarity)
-        
+
     def uart_configuration(self,
                            pin_output: int = UartConfiguration.PinOutput.HIZ,
                            databits_parity: int = UartConfiguration.DataBitsAndParity.EIGHT_NONE,

@@ -35,8 +35,6 @@ class PinConfiguration(IntEnum):
 
 class BusPirate(object):
     """ Base Class for BitBanging on BusPirate """
-    _peripherials = None
-
     def __init__(self, port: str,
                  baudrate: int = 115200,
                  # bytesize: int = serial.EIGHTBITS,
@@ -73,6 +71,11 @@ class BusPirate(object):
 
         :returns: returns nothing
         """
+        self._speed = None
+        self._config = None
+        self._peripherials = None
+        self._cs = None
+
         self.pass_to_super = locals()
         # self.pass_to_super.pop('self')
         # self.pass_to_super.pop('serial_class')
@@ -152,17 +155,18 @@ class BusPirate(object):
 
     @property
     def peripherials(self):
+        """ Peripherial Pins Property Getter """
         return self._peripherials
 
-    
     @peripherials.setter
     def peripherials(self, value):
+        """ Peripherial Pins Property Setter """
         self._peripherials = value
         power = value & 0b1000
         pullups = value & 0b0100
         aux = value & 0b0010
-        cs = value & 0b0001
-        return self.configure_peripherials(power, pullups, aux, cs)
+        chipselect = value & 0b0001
+        return self.configure_peripherials(power, pullups, aux, chipselect)
 
     def configure_peripherials(self,
                                power: int = PinConfiguration.DISABLE,
