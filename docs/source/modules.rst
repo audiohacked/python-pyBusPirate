@@ -1,5 +1,5 @@
-buspirate
-=========
+src
+===
 
 .. toctree::
    :maxdepth: 4

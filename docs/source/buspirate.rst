@@ -60,10 +60,10 @@ buspirate.uart module
     :undoc-members:
     :show-inheritance:
 
-buspirate.utilites module
--------------------------
+buspirate.utilities module
+--------------------------
 
-.. automodule:: buspirate.utilites
+.. automodule:: buspirate.utilities
     :members:
     :undoc-members:
     :show-inheritance:
