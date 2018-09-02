@@ -22,6 +22,7 @@ from buspirate.base import BusPirate
 
 class JTAG(BusPirate):
     """ JTAG BitBanging on the BusPirate """
+    @property
     def enter(self):
         """
         Enter JTAG Mode on the BusPirate

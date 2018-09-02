@@ -36,27 +36,27 @@ class BusPirateI2CTest(unittest.TestCase):
 
     def test_exit(self):
         self.bus_pirate.serial.read.return_value = "BBIO1"
-        self.assertEqual(self.bus_pirate.exit(), True)
+        self.assertEqual(self.bus_pirate.exit, True)
         self.bus_pirate.serial.write.assert_called_with(0x00)
 
     def test_mode(self):
         self.bus_pirate.serial.read.return_value = "I2C1"
-        self.assertEqual(self.bus_pirate.mode(), True)
+        self.assertEqual(self.bus_pirate.mode, True)
         self.bus_pirate.serial.write.assert_called_with(0x01)
 
     def test_enter(self):
         self.bus_pirate.serial.read.return_value = "I2C1"
-        self.assertEqual(self.bus_pirate.enter(), True)
+        self.assertEqual(self.bus_pirate.enter, True)
         self.bus_pirate.serial.write.assert_called_with(0x02)
 
     def test_start_bit(self):
         self.bus_pirate.serial.read.return_value = 0x01
-        self.assertEqual(self.bus_pirate.start_bit(), True)
+        self.assertEqual(self.bus_pirate.start_bit, True)
         self.bus_pirate.serial.write.assert_called_with(0x02)
 
     def test_stop_bit(self):
         self.bus_pirate.serial.read.return_value = 0x01
-        self.assertEqual(self.bus_pirate.stop_bit(), True)
+        self.assertEqual(self.bus_pirate.stop_bit, True)
         self.bus_pirate.serial.write.assert_called_with(0x03)
 
     def test_read_byte(self) -> bytes:
@@ -66,12 +66,12 @@ class BusPirateI2CTest(unittest.TestCase):
 
     def test_ack_bit(self):
         self.bus_pirate.serial.read.return_value = 0x01
-        self.assertEqual(self.bus_pirate.ack_bit(), True)
+        self.assertEqual(self.bus_pirate.ack_bit, True)
         self.bus_pirate.serial.write.assert_called_with(0x06)
 
     def test_nack_bit(self):
         self.bus_pirate.serial.read.return_value = 0x01
-        self.assertEqual(self.bus_pirate.nack_bit(), True)
+        self.assertEqual(self.bus_pirate.nack_bit, True)
         self.bus_pirate.serial.write.assert_called_with(0x07)
 
     def test_sniff(self):

@@ -22,6 +22,7 @@ from buspirate.base import BusPirate
 
 class OneWire(BusPirate):
     """ OneWire BitBanging on the BusPirate """
+    @property
     def exit(self):
         """
         Exit OneWire Mode on the BusPirate
@@ -31,6 +32,7 @@ class OneWire(BusPirate):
         self.serial.write(0x00)
         return self.read(5) == "BBIO1"
 
+    @property
     def enter(self):
         """
         Enter OneWire Mode on the BusPirate
@@ -49,6 +51,7 @@ class OneWire(BusPirate):
         self.serial.write(0x04)
         return self.read(1)
 
+    @property
     def rom_search(self):
         """
         Search for ROMs, successive reads are device address, terminates with 8 0xff
@@ -58,6 +61,7 @@ class OneWire(BusPirate):
         self.serial.write(0x08)
         return self.read(1) == 0x01
 
+    @property
     def alarm_search(self):
         """
         Search for Alarms, successive reads are device address, terminates with 8 0xff

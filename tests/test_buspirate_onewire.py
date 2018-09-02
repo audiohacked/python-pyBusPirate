@@ -36,17 +36,17 @@ class BusPirateOneWireTest(unittest.TestCase):
 
     def test_exit(self):
         self.bus_pirate.serial.read.return_value = "BBIO1"
-        self.assertEqual(self.bus_pirate.exit(), True)
+        self.assertEqual(self.bus_pirate.exit, True)
         self.bus_pirate.serial.write.assert_called_with(0x00)
 
     def test_mode(self):
         self.bus_pirate.serial.read.return_value = "1W01"
-        self.assertEqual(self.bus_pirate.mode(), "1W01")
+        self.assertEqual(self.bus_pirate.mode, "1W01")
         self.bus_pirate.serial.write.assert_called_with(0x01)
 
     def test_enter(self):
         self.bus_pirate.serial.read.return_value = "1W01"
-        self.assertEqual(self.bus_pirate.enter(), True)
+        self.assertEqual(self.bus_pirate.enter, True)
         self.bus_pirate.serial.write.assert_called_with(0x04)
 
     def test_read_byte(self) -> bytes:
@@ -56,12 +56,12 @@ class BusPirateOneWireTest(unittest.TestCase):
 
     def test_rom_search(self):
         self.bus_pirate.serial.read.return_value = 0x01
-        self.assertEqual(self.bus_pirate.rom_search(), True)
+        self.assertEqual(self.bus_pirate.rom_search, True)
         self.bus_pirate.serial.write.assert_called_with(0x08)
 
     def test_alarm_search(self):
         self.bus_pirate.serial.read.return_value = 0x01
-        self.assertEqual(self.bus_pirate.alarm_search(), True)
+        self.assertEqual(self.bus_pirate.alarm_search, True)
         self.bus_pirate.serial.write.assert_called_with(0x09)
 
     def test_1wire_bulk_write(self):

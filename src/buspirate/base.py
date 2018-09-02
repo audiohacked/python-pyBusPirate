@@ -27,10 +27,16 @@ class PinConfiguration(IntEnum):
     """ Enum for Peripherial Configuration """
     DISABLE = 0b0
     ENABLE = 0b1
+    CHIPSELECT = 0b0001
+    AUX = 0b0010
+    PULLUPS = 0b0100
+    POWER = 0b1000
 
 
 class BusPirate(object):
     """ Base Class for BitBanging on BusPirate """
+    _peripherials = None
+
     def __init__(self, port: str,
                  baudrate: int = 115200,
                  # bytesize: int = serial.EIGHTBITS,
@@ -74,7 +80,8 @@ class BusPirate(object):
         # super(BusPirate, self).__init__(**self.pass_to_super)
         self.serial = serial.Serial(**self.pass_to_super)
         self.serial.open()
-        self.enter()
+        if self.enter:
+            raise ValueError("Couldn't enter BBIO Mode")
 
     def write(self, data: bytes = None) -> None:
         """
@@ -99,6 +106,7 @@ class BusPirate(object):
         """
         return self.serial.read(count)
 
+    @property
     def enter(self) -> bool:
         """
         Enter BitBang Mode on the BusPirate
@@ -110,6 +118,7 @@ class BusPirate(object):
             self.write(0x00)
             return self.read(5) == "BBIO1"
 
+    @property
     def mode(self) -> str:
         """
         Get Version and Mode
@@ -120,6 +129,7 @@ class BusPirate(object):
         self.write(0x01)
         return self.read(4)
 
+    @property
     def reset(self):
         """
         Reset BitBang Mode
@@ -132,13 +142,27 @@ class BusPirate(object):
         """
         Configure BusPirate Pins
         """
-        pass
+        raise NotImplementedError
 
     def set_pins(self):
         """
         Set BusPirate Pins
         """
-        pass
+        raise NotImplementedError
+
+    @property
+    def peripherials(self):
+        return self._peripherials
+
+    
+    @peripherials.setter
+    def peripherials(self, value):
+        self._peripherials = value
+        power = value & 0b1000
+        pullups = value & 0b0100
+        aux = value & 0b0010
+        cs = value & 0b0001
+        return self.configure_peripherials(power, pullups, aux, cs)
 
     def configure_peripherials(self,
                                power: int = PinConfiguration.DISABLE,
@@ -164,9 +188,9 @@ class BusPirate(object):
         :rtype: bool.
         """
         data = 0
-        data += power<<3
-        data += pull_ups<<2
-        data += aux<<1
+        data += power
+        data += pull_ups
+        data += aux
         data += chip_select
         self.write(0x40|data)
         return self.read(1) == 0x01

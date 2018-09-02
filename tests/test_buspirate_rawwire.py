@@ -36,37 +36,37 @@ class BusPirateRawWireTest(unittest.TestCase):
 
     def test_exit(self):
         self.bus_pirate.serial.read.return_value = "BBIO1"
-        self.assertEqual(self.bus_pirate.exit(), True)
+        self.assertEqual(self.bus_pirate.exit, True)
         self.bus_pirate.serial.write.assert_called_with(0x00)
 
     def test_mode(self):
         self.bus_pirate.serial.read.return_value = "RAW1"
-        self.assertEqual(self.bus_pirate.mode(), "RAW1")
+        self.assertEqual(self.bus_pirate.mode, "RAW1")
         self.bus_pirate.serial.write.assert_called_with(0x01)
 
     def test_enter(self):
         self.bus_pirate.serial.read.return_value = "RAW1"
-        self.assertEqual(self.bus_pirate.enter(), True)
+        self.assertEqual(self.bus_pirate.enter, True)
         self.bus_pirate.serial.write.assert_called_with(0x05)
 
     def test_start_bit(self):
         self.bus_pirate.serial.read.return_value = 0x01
-        self.assertEqual(self.bus_pirate.start_bit(), True)
+        self.assertEqual(self.bus_pirate.start_bit, True)
         self.bus_pirate.serial.write.assert_called_with(0x02)
 
     def test_stop_bit(self):
         self.bus_pirate.serial.read.return_value = 0x01
-        self.assertEqual(self.bus_pirate.stop_bit(), True)
+        self.assertEqual(self.bus_pirate.stop_bit, True)
         self.bus_pirate.serial.write.assert_called_with(0x03)
 
     def test_cs_low(self):
         self.bus_pirate.serial.read.return_value = 0x01
-        self.assertEqual(self.bus_pirate.cs_low(), True)
+        self.assertEqual(self.bus_pirate.cs_low, True)
         self.bus_pirate.serial.write.assert_called_with(0x04)
 
     def test_cs_high(self):
         self.bus_pirate.serial.read.return_value = 0x01
-        self.assertEqual(self.bus_pirate.cs_high(), True)
+        self.assertEqual(self.bus_pirate.cs_high, True)
         self.bus_pirate.serial.write.assert_called_with(0x05)
 
     def test_read_byte(self):
@@ -91,22 +91,22 @@ class BusPirateRawWireTest(unittest.TestCase):
 
     def test_clock_low(self):
         self.bus_pirate.serial.read.return_value = 0x01
-        self.assertEqual(self.bus_pirate.clock_low(), True)
+        self.assertEqual(self.bus_pirate.clock_low, True)
         self.bus_pirate.serial.write.assert_called_with(0x0A|0x00)
 
     def test_clock_high(self):
         self.bus_pirate.serial.read.return_value = 0x01
-        self.assertEqual(self.bus_pirate.clock_high(), True)
+        self.assertEqual(self.bus_pirate.clock_high, True)
         self.bus_pirate.serial.write.assert_called_with(0x0A|0x01)
 
     def test_data_low(self):
         self.bus_pirate.serial.read.return_value = 0x01
-        self.assertEqual(self.bus_pirate.data_low(), True)
+        self.assertEqual(self.bus_pirate.data_low, True)
         self.bus_pirate.serial.write.assert_called_with(0x0C|0x00)
 
     def test_data_high(self):
         self.bus_pirate.serial.read.return_value = 0x01
-        self.assertEqual(self.bus_pirate.data_high(), True)
+        self.assertEqual(self.bus_pirate.data_high, True)
         self.bus_pirate.serial.write.assert_called_with(0x0C|0x01)
 
     def test_rawwire_bulk_write(self):

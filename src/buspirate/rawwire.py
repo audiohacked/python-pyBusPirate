@@ -71,20 +71,20 @@ class RawWireConfiguration(object):
 
     class PinOutput(IntEnum):
         """ Enum for Pin Output """
-        HIZ = 0b0
-        PIN_HIZ = 0b0
-        V3P3 = 0b1
-        PIN_3P3V = 0b1
+        HIZ  = 0b0000
+        V3P3 = 0b1000
+        PIN_HIZ  = 0b0000
+        PIN_3P3V = 0b1000
 
     class WireProtocol(IntEnum):
         """ Enum for Wire Protocol """
-        PROTOCOL_2WIRE = 0b0
-        PROTOCOL_3WIRE = 0b1
+        PROTOCOL_2WIRE = 0b0000
+        PROTOCOL_3WIRE = 0b0100
 
     class BitOrder(IntEnum):
         """ Enum for Bit Order """
-        MSB = 0b0
-        LSB = 0b1
+        MSB = 0b0000
+        LSB = 0b0010
 
     class NotUsed(IntEnum):
         """ Enum for Position Z in RawWireConfiguration """
@@ -93,6 +93,7 @@ class RawWireConfiguration(object):
 
 class RawWire(BusPirate):
     """ RawWire BitBanging on the BusPirate """
+    @property
     def exit(self):
         """
         Exit RawWire Mode
@@ -103,6 +104,7 @@ class RawWire(BusPirate):
         return self.read(5) == "BBIO1"
 
 
+    @property
     def enter(self):
         """
         Enter RawWire Mode
@@ -113,6 +115,7 @@ class RawWire(BusPirate):
         return self.read(4) == "RAW1"
 
 
+    @property
     def start_bit(self):
         """
         Start Bit
@@ -123,6 +126,7 @@ class RawWire(BusPirate):
         return self.read(1) == 0x01
 
 
+    @property
     def stop_bit(self):
         """
         Stop Bit
@@ -133,6 +137,7 @@ class RawWire(BusPirate):
         return self.read(1) == 0x01
 
 
+    @property
     def cs_low(self):
         """
         Toggle Chip Select Low
@@ -143,6 +148,7 @@ class RawWire(BusPirate):
         return self.read(1) == 0x01
 
 
+    @property
     def cs_high(self):
         """
         Toggle Chip Select High
@@ -193,6 +199,7 @@ class RawWire(BusPirate):
         return self.read(1) == 0x01
 
 
+    @property
     def clock_low(self):
         """
         Toggle Clock Low
@@ -203,6 +210,7 @@ class RawWire(BusPirate):
         return self.read(1) == 0x01
 
 
+    @property
     def clock_high(self):
         """
         Toggle Clock High
@@ -213,6 +221,7 @@ class RawWire(BusPirate):
         return self.read(1) == 0x01
 
 
+    @property
     def data_low(self):
         """
         Toggle Data line Low
@@ -223,6 +232,7 @@ class RawWire(BusPirate):
         return self.read(1) == 0x01
 
 
+    @property
     def data_high(self):
         """
         Toggle Data line High
@@ -267,6 +277,15 @@ class RawWire(BusPirate):
         raise NotImplementedError
 
 
+    @property
+    def speed(self):
+        return self._speed
+        
+    @speed.setter
+    def speed(self, value):
+        self._speed = value
+        self.rawwire_speed(value)
+
     def rawwire_speed(self, rawwire_speed: int = RawWireSpeed.SPEED_400KHZ) -> bool:
         """
         Raw Wire Speed Configuration
@@ -281,6 +300,18 @@ class RawWire(BusPirate):
         return self.read(1) == 0x01
 
 
+    @property
+    def config(self):
+        return self._config
+
+    @config.setter
+    def config(self, value):
+        self._config = value
+        p_output = value & 0b1000
+        protocol = value & 0b0100
+        bitorder = value & 0b0010
+        return self.rawwire_config(p_output, protocol, bitorder)
+        
     def rawwire_config(self,
                        pin_output: int = RawWireConfiguration.PinOutput.HIZ,
                        wire_protocol: int = RawWireConfiguration.WireProtocol.PROTOCOL_2WIRE,
@@ -301,9 +332,9 @@ class RawWire(BusPirate):
         :rtype: bool.
         """
         rawwire_configuration = 0
-        rawwire_configuration += pin_output<<3
-        rawwire_configuration += wire_protocol<<2
-        rawwire_configuration += bit_order<<1
+        rawwire_configuration += pin_output
+        rawwire_configuration += wire_protocol
+        rawwire_configuration += bit_order
 
         self.write(0x80|rawwire_configuration)
         return self.read(1) == 0x01

@@ -39,8 +39,13 @@ class BusPirateSpiTest(unittest.TestCase):
 
     def test_enter(self):
         self.bus_pirate.serial.read.return_value = "SPI1"
-        self.assertEqual(self.bus_pirate.enter(), True)
+        self.assertEqual(self.bus_pirate.enter, True)
         self.bus_pirate.serial.write.assert_called_with(0x01)
+
+    def test_chip_select_high(self):
+        self.bus_pirate.serial.read.return_value = 0x01
+        self.assertEqual(self.bus_pirate.chip_select(spi.CsLevel.HIGH), True)
+        self.bus_pirate.serial.write.assert_called_with(0x02|0x01)
 
     def test_chip_select_low(self):
         self.bus_pirate.serial.read.return_value = 0x01

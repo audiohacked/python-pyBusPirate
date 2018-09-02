@@ -108,6 +108,7 @@ class SpiConfiguration(object):
 
 class SPI(BusPirate):
     """ SPI BitBanging on the BusPirate """
+    @property
     def enter(self) -> bool:
         """
         Enter BitBang Mode on the BusPirate
@@ -118,6 +119,15 @@ class SPI(BusPirate):
         self.write(0x01)
         return self.read(4) == "SPI1"
 
+    @property
+    def cs(self):
+        return self._cs
+
+    @cs.setter
+    def cs(self, value):
+        self._cs = value
+        self.chip_select(value)
+        
     def chip_select(self, level: int = CsLevel.LOW) -> bool:
         """
         SPI Chip Select
@@ -144,6 +154,15 @@ class SPI(BusPirate):
         self.write(0x0C|trigger)
         return self.read(1) == 0x01
 
+    @property
+    def speed(self):
+        return self._speed
+
+    @speed.setter
+    def speed(self, value):
+        self._speed = value
+        return self.spi_speed(value)
+        
     def spi_speed(self, spi_speed: int = SpiSpeed.SPEED_30KHZ) -> bool:
         """
         SPI Speed Configuration
@@ -157,6 +176,19 @@ class SPI(BusPirate):
         self.write(0x60|spi_speed)
         return self.read(1) == 0x01
 
+    @property
+    def config(self):
+        return self._config
+
+    @config.setter
+    def config(self, value):
+        self._config = value
+        pin_outputs = value & 0b1000
+        clock_phase = value & 0b0100
+        clock_edges = value & 0b0010
+        sampletimes = value & 0b0001
+        return self.spi_configuration(pin_outputs, clock_phase, clock_edges, sampletimes)
+        
     def spi_configuration(self,
                           pin_output: int = SpiConfiguration.PinOutput.HIZ,
                           clock_phase: int = SpiConfiguration.ClockPhase.LOW,

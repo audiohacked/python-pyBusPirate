@@ -43,6 +43,7 @@ class I2CExtendAux(IntEnum):
 
 class I2C(BusPirate):
     """ I2C BitBanging on the BusPirate """
+    @property
     def exit(self) -> bool:
         """
         Exit to BitBang mode
@@ -53,6 +54,7 @@ class I2C(BusPirate):
         self.write(0x00)
         return self.read(5) == "BBIO1"
 
+    @property
     def mode(self) -> bool:
         """
         Get Version and Mode
@@ -63,6 +65,7 @@ class I2C(BusPirate):
         self.write(0x01)
         return self.read(4) == "I2C1"
 
+    @property
     def enter(self) -> bool:
         """
         Enter I2C Mode on the BusPirate
@@ -73,6 +76,7 @@ class I2C(BusPirate):
         self.write(0x02)
         return self.read(4) == "I2C1"
 
+    @property
     def start_bit(self) -> bool:
         """
         Send I2C Start bit
@@ -83,6 +87,7 @@ class I2C(BusPirate):
         self.write(0x02)
         return self.read(1) == 0x01
 
+    @property
     def stop_bit(self) -> bool:
         """
         Send I2C Stop bit
@@ -103,6 +108,7 @@ class I2C(BusPirate):
         self.write(0x04)
         return self.read(1) == 0x01
 
+    @property
     def ack_bit(self) -> bool:
         """
         Send I2C ACK bit
@@ -113,6 +119,7 @@ class I2C(BusPirate):
         self.write(0x06)
         return self.read(1) == 0x01
 
+    @property
     def nack_bit(self) -> bool:
         """
         Send I2C NACK bit
@@ -139,6 +146,16 @@ class I2C(BusPirate):
         """
         raise NotImplementedError
 
+    @property
+    def speed(self):
+        return self._speed
+
+
+    @speed.setter
+    def speed(self, value):
+        self._speed = value
+        return self.i2c_speed(value)
+        
     def i2c_speed(self, i2c_speed: int = I2CSpeed.SPEED_5KHZ):
         """
         SPI Speed Configuration

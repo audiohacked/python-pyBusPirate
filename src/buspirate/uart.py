@@ -42,22 +42,22 @@ class UartConfiguration(object):
     """ UART Configuration Enum Base """
     class PinOutput(IntEnum):
         """ Enum for Pin Output """
-        HIZ = 0b0
-        PIN_HIZ = 0b0
-        V3P3 = 0b1
-        PIN_3P3V = 0b1
+        HIZ = 0b00000
+        V3P3 = 0b10000
+        PIN_HIZ = 0b00000
+        PIN_3P3V = 0b10000
 
     class DataBitsAndParity(IntEnum):
         """ Enum for Data bits and Parity """
-        EIGHT_NONE = 0b00
-        EIGHT_EVEN = 0b01
-        EIGHT_ODD = 0b10
-        NINE_NONE = 0b11
+        EIGHT_NONE = 0b0000
+        EIGHT_EVEN = 0b0100
+        EIGHT_ODD = 0b1000
+        NINE_NONE = 0b1100
 
     class StopBits(IntEnum):
         """ Enum for Stop bits """
-        ONE = 0b0
-        TWO = 0b1
+        ONE = 0b00
+        TWO = 0b10
 
     class RxPolarity(IntEnum):
         """ Enum for Rx Polarity """
@@ -67,6 +67,7 @@ class UartConfiguration(object):
 
 class UART(BusPirate):
     """ UART BitBanging on the BusPirate """
+    @property
     def enter(self) -> bool:
         """
         Enter UART Mode on the BusPirate
@@ -103,6 +104,7 @@ class UART(BusPirate):
         self.write(data)
         return self.read(3) == [0x01, 0x01, 0x01]
 
+    @property
     def bridge_mode(self) -> bool:
         """
         Enable Bridge mode. Hard Reset BP to exit.
@@ -113,6 +115,15 @@ class UART(BusPirate):
         self.write(0x0F)
         return self.read(1) == 0x01
 
+    @property
+    def speed(self):
+        return self._speed
+
+    @speed.setter
+    def speed(self, value):
+        self._speed = value
+        return self.spi_speed(value)
+        
     def uart_speed(self, baudrate: int = UartSpeed.BAUD_115200) -> bool:
         """
         Set UART Speed
@@ -126,6 +137,19 @@ class UART(BusPirate):
         self.write(0x60|baudrate)
         return self.read(1) == 0x01
 
+    @property
+    def config(self):
+        return self._config
+
+    @config.setter
+    def config(self, value):
+        self._config = value
+        pin_outputs = value & 0b1000
+        data_parity = value & 0b0100
+        uastop_bits = value & 0b0010
+        rx_polarity = value & 0b0001
+        return self.uart_configuration(pin_outputs, data_parity, uastop_bits, rx_polarity)
+        
     def uart_configuration(self,
                            pin_output: int = UartConfiguration.PinOutput.HIZ,
                            databits_parity: int = UartConfiguration.DataBitsAndParity.EIGHT_NONE,
@@ -150,9 +174,9 @@ class UART(BusPirate):
         :rtype: bool.
         """
         uart_configuration = 0
-        uart_configuration += pin_output<<4
-        uart_configuration += databits_parity<<2
-        uart_configuration += stop_bits<<1
+        uart_configuration += pin_output
+        uart_configuration += databits_parity
+        uart_configuration += stop_bits
         uart_configuration += rx_polarity
         self.write(0x80|uart_configuration)
         return self.read(1) == 0x01

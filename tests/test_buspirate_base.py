@@ -39,23 +39,25 @@ class BusPirateTest(unittest.TestCase):
 
     def test_enter(self):
         self.bus_pirate.serial.read.return_value = "BBIO1"
-        self.assertEqual(self.bus_pirate.enter(), True)
+        self.assertEqual(self.bus_pirate.enter, True)
         self.bus_pirate.serial.write.assert_called_with(0x00)
 
     def test_mode(self):
         self.bus_pirate.serial.read.return_value = "SPI1"
-        self.assertEqual(self.bus_pirate.mode(), "SPI1")
+        self.assertEqual(self.bus_pirate.mode, "SPI1")
         self.bus_pirate.serial.write.assert_called_with(0x01)
 
     def test_reset(self):
-        self.assertEqual(self.bus_pirate.reset(), None)
+        self.assertEqual(self.bus_pirate.reset, None)
         self.bus_pirate.serial.write.assert_called_with(0x0F)
 
     def test_configure_pins(self):
-        self.assertEqual(self.bus_pirate.configure_pins(), None)
+        with self.assertRaises(NotImplementedError):
+            self.bus_pirate.configure_pins()
 
     def test_set_pins(self):
-        self.assertEqual(self.bus_pirate.set_pins(), None)
+        with self.assertRaises(NotImplementedError):
+            self.bus_pirate.set_pins()
 
     def test_configure_peripherials(self):
         self.bus_pirate.serial.read.return_value = 0x01

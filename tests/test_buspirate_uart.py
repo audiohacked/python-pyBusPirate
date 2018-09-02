@@ -39,12 +39,12 @@ class BusPirateUartTest(unittest.TestCase):
 
     def test_enter(self):
         self.bus_pirate.serial.read.return_value = "ART1"
-        self.assertEqual(self.bus_pirate.enter(), True)
+        self.assertEqual(self.bus_pirate.enter, True)
         self.bus_pirate.serial.write.assert_called_with(0x03)
 
     def test_mode(self):
         self.bus_pirate.serial.read.return_value = "ART1"
-        self.assertEqual(self.bus_pirate.mode(), "ART1")
+        self.assertEqual(self.bus_pirate.mode, "ART1")
         self.bus_pirate.serial.write.assert_called_with(0x01)
 
     def test_echo_rx(self):
@@ -60,7 +60,7 @@ class BusPirateUartTest(unittest.TestCase):
 
     def test_bridge_mode(self):
         self.bus_pirate.serial.read.return_value = 0x01
-        self.assertEqual(self.bus_pirate.bridge_mode(), True)
+        self.assertEqual(self.bus_pirate.bridge_mode, True)
         self.bus_pirate.serial.write.assert_called_with(0x0F)
 
     def test_uart_bulk_write(self):
