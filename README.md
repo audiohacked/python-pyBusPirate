@@ -4,7 +4,7 @@ Library for the [Dangerous Prototypes Bus Pirate](http://dangerousprototypes.com
 
 ### Requirements
 * Linux
-* Python 3.3 and up
+* Python 3.5 and up
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
