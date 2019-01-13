@@ -77,7 +77,7 @@ class BusPirate(object):
         self._cs = None
 
         self.pass_to_super = locals()
-        # self.pass_to_super.pop('self')
+        self.pass_to_super.pop('self')
         # self.pass_to_super.pop('serial_class')
         # self.pass_to_super.pop('__class__')
         # super(BusPirate, self).__init__(**self.pass_to_super)
