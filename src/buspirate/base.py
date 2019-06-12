@@ -76,12 +76,17 @@ class BusPirate(object):
         self._peripherials = None
         self._cs = None
 
-        self.pass_to_super = locals()
-        self.pass_to_super.pop('self')
+#         self.pass_to_super = locals()
+#         self.pass_to_super.pop('self')
         # self.pass_to_super.pop('serial_class')
         # self.pass_to_super.pop('__class__')
         # super(BusPirate, self).__init__(**self.pass_to_super)
-        self.serial = serial.Serial(**self.pass_to_super)
+#         self.serial = serial.Serial(**self.pass_to_super)
+        self.serial = serial.Serial()
+        self.serial.port = port
+        self.serial.baudrate = baudrate
+        self.serial.timeout = timeout
+        self.serial.write_timeout = write_timeout
         self.serial.open()
         if self.enter:
             raise ValueError("Couldn't enter BBIO Mode")
