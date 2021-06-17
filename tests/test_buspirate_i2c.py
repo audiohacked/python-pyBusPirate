@@ -92,6 +92,12 @@ class BusPirateI2CTest(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             self.bus_pirate.pullup_voltage_select()
 
+    def test_speed(self):
+        self.bus_pirate.speed = i2c.I2CSpeed.SPEED_50KHZ
+        self.bus_pirate.serial.read.return_value = 0x01
+        self.assertEqual(self.bus_pirate.speed, i2c.I2CSpeed.SPEED_50KHZ)
+        self.bus_pirate.serial.write.assert_called_with(0x60|0x01)
+
     def test_i2c_speed(self):
         self.bus_pirate.serial.read.return_value = 0x01
         self.assertEqual(self.bus_pirate.i2c_speed(i2c.I2CSpeed.SPEED_50KHZ), True)

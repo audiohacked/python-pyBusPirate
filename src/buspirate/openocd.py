@@ -23,6 +23,16 @@ from buspirate.base import BusPirate
 class JTAG(BusPirate):
     """ JTAG BitBanging on the BusPirate """
     @property
+    def exit(self):
+        """
+        Exit JTAG Mode on the BusPirate
+
+        :returns: returns Success or Failure
+        """
+        self.serial.write(0x00)
+        return self.read(5) == "BBIO1"
+
+    @property
     def enter(self):
         """
         Enter JTAG Mode on the BusPirate
