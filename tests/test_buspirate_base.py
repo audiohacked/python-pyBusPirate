@@ -59,16 +59,16 @@ class BusPirateTest(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             self.bus_pirate.set_pins()
 
-    def test_peripherials(self):
+    def test_configure_peripherials(self):
         self.bus_pirate.peripherials = 0b0000
         self.bus_pirate.serial.read.return_value = 0x01
         self.assertEqual(self.bus_pirate.peripherials, 0b0000)
         self.bus_pirate.serial.write.assert_called_with(0x40|0x00)
 
-    def test_configure_peripherials(self):
-        self.bus_pirate.serial.read.return_value = 0x01
-        self.assertEqual(self.bus_pirate.configure_peripherials(), True)
-        self.bus_pirate.serial.write.assert_called_with(0x40|0x00)
+#    def test_configure_peripherials(self):
+#        self.bus_pirate.serial.read.return_value = 0x01
+#        self.assertEqual(self.bus_pirate.configure_peripherials(), True)
+#        self.bus_pirate.serial.write.assert_called_with(0x40|0x00)
 
     def test_bulk_write(self):
         data = [idx for idx in range(1, 17)]

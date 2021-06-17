@@ -71,28 +71,14 @@ class BusPirateUartTest(unittest.TestCase):
         self.bus_pirate.serial.write.assert_any_call(0x10|0x0F)
         self.bus_pirate.serial.write.assert_any_call(data)
 
-    def test_speed(self):
+    def test_uart_speed(self):
         self.bus_pirate.speed = uart.UartSpeed.BAUD_115200
         self.bus_pirate.serial.read.return_value = 0x01
         self.assertEqual(self.bus_pirate.speed, uart.UartSpeed.BAUD_115200)
         self.bus_pirate.serial.write.assert_called_with(0x60|0x0A)
 
-    def test_uart_speed(self):
-        self.bus_pirate.serial.read.return_value = 0x01
-        self.assertEqual(self.bus_pirate.uart_speed(uart.UartSpeed.BAUD_115200), True)
-        self.bus_pirate.serial.write.assert_called_with(0x60|0x0A)
-
-    def test_config(self):
+    def test_uart_config(self):
         self.bus_pirate.config = 0b000
         self.bus_pirate.serial.read.return_value = 0x01
         self.assertEqual(self.bus_pirate.config, 0b0000)
-        self.bus_pirate.serial.write.assert_called_with(0x80|0x00)
-
-    def test_uart_configuration(self):
-        self.bus_pirate.serial.read.return_value = 0x01
-        result = self.bus_pirate.uart_configuration(uart.UartConfiguration.PinOutput.HIZ, \
-                                                uart.UartConfiguration.DataBitsAndParity.EIGHT_NONE,
-                                                    uart.UartConfiguration.StopBits.ONE,
-                                                    uart.UartConfiguration.RxPolarity.IDLE_1)
-        self.assertEqual(result, True)
         self.bus_pirate.serial.write.assert_called_with(0x80|0x00)
