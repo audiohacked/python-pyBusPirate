@@ -103,7 +103,6 @@ class RawWire(BusPirate):
         self.write(0x00)
         return self.read(5) == "BBIO1"
 
-
     @property
     def enter(self):
         """
@@ -113,7 +112,6 @@ class RawWire(BusPirate):
         """
         self.write(0x05)
         return self.read(4) == "RAW1"
-
 
     @property
     def start_bit(self):
@@ -125,7 +123,6 @@ class RawWire(BusPirate):
         self.write(0x02)
         return self.read(1) == 0x01
 
-
     @property
     def stop_bit(self):
         """
@@ -135,7 +132,6 @@ class RawWire(BusPirate):
         """
         self.write(0x03)
         return self.read(1) == 0x01
-
 
     @property
     def cs_low(self):
@@ -147,7 +143,6 @@ class RawWire(BusPirate):
         self.write(0x04)
         return self.read(1) == 0x01
 
-
     @property
     def cs_high(self):
         """
@@ -158,7 +153,6 @@ class RawWire(BusPirate):
         self.write(0x05)
         return self.read(1) == 0x01
 
-
     def read_byte(self):
         """
         Read Byte from Bus
@@ -167,7 +161,6 @@ class RawWire(BusPirate):
         """
         self.write(0x06)
         return self.read(1)
-
 
     def read_bit(self):
         """
@@ -178,7 +171,6 @@ class RawWire(BusPirate):
         self.write(0x07)
         return self.read(1)
 
-
     def peek(self):
         """
         Peek at Bus without toggling CS or something
@@ -188,7 +180,6 @@ class RawWire(BusPirate):
         self.write(0x08)
         return self.read(1)
 
-
     def clock_tick(self):
         """
         Jiggle Clock
@@ -197,7 +188,6 @@ class RawWire(BusPirate):
         """
         self.write(0x09)
         return self.read(1) == 0x01
-
 
     @property
     def clock_low(self):
@@ -209,7 +199,6 @@ class RawWire(BusPirate):
         self.write(0x0A)
         return self.read(1) == 0x01
 
-
     @property
     def clock_high(self):
         """
@@ -219,7 +208,6 @@ class RawWire(BusPirate):
         """
         self.write(0x0B)
         return self.read(1) == 0x01
-
 
     @property
     def data_low(self):
@@ -231,7 +219,6 @@ class RawWire(BusPirate):
         self.write(0x0C)
         return self.read(1) == 0x01
 
-
     @property
     def data_high(self):
         """
@@ -242,7 +229,6 @@ class RawWire(BusPirate):
         self.write(0x0D)
         return self.read(1) == 0x01
 
-
     def bulk_clock_ticks(self, count: int = 16):
         """
         Send Bulk Clock ticks
@@ -251,9 +237,8 @@ class RawWire(BusPirate):
         """
         if count == 0 or count > 16:
             raise ValueError
-        self.write(0x20|count-1)
+        self.write(0x20 | count-1)
         return self.read(1) == 0x01
-
 
     def bulk_bits(self, count: int = 8, data_byte: int = 0x00):
         """
@@ -263,10 +248,9 @@ class RawWire(BusPirate):
         """
         if count == 0 or count > 8:
             raise ValueError
-        self.write(0x30|count-1)
+        self.write(0x30 | count-1)
         self.write(data_byte)
         return self.read(1) == 0x01
-
 
     def pullup_voltage_select(self) -> None:
         """
@@ -275,7 +259,6 @@ class RawWire(BusPirate):
         Unimplmented!
         """
         raise NotImplementedError
-
 
     @property
     def speed(self):
@@ -298,9 +281,8 @@ class RawWire(BusPirate):
         :returns: returns Success or Failure
         :rtype: bool
         """
-        self.write(0x60|rawwire_speed)
+        self.write(0x60 | rawwire_speed)
         return self.read(1) == 0x01
-
 
     @property
     def config(self):
@@ -340,7 +322,7 @@ class RawWire(BusPirate):
         rawwire_configuration += wire_protocol
         rawwire_configuration += bit_order
 
-        self.write(0x80|rawwire_configuration)
+        self.write(0x80 | rawwire_configuration)
         return self.read(1) == 0x01
 
 

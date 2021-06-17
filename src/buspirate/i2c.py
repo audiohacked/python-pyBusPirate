@@ -151,7 +151,6 @@ class I2C(BusPirate):
         """ Speed Property Getter """
         return self._speed
 
-
     @speed.setter
     def speed(self, value):
         """ Speed Property Setter """
@@ -168,7 +167,7 @@ class I2C(BusPirate):
         :returns: returns Success or Failure
         :rtype: bool.
         """
-        self.write(0x60|i2c_speed)
+        self.write(0x60 | i2c_speed)
         return self.read(1) == 0x01
 
     def write_then_read(self,
@@ -203,6 +202,7 @@ class I2C(BusPirate):
         send_buffer: bytes = [0x09, command]
         self.write(send_buffer)
         return self.read(1) == 0x01
+
 
 if __name__ == '__main__':
     pass
