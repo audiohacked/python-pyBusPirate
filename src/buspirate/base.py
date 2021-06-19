@@ -73,7 +73,7 @@ class BusPirate(object):
         """
         self._speed = None
         self._config = None
-        self._peripherials = None
+        self._peripherals = None
         self._cs = None
 
         self.pass_to_super = locals()
@@ -154,21 +154,21 @@ class BusPirate(object):
         raise NotImplementedError
 
     @property
-    def peripherials(self):
+    def peripherals(self):
         """ Peripherial Pins Property Getter """
-        return self._peripherials
+        return self._peripherals
 
-    @peripherials.setter
-    def peripherials(self, value):
+    @peripherals.setter
+    def peripherals(self, value):
         """ Peripherial Pins Property Setter """
-        self._peripherials = value
+        self._peripherals = value
         power = value & 0b1000
         pullups = value & 0b0100
         aux = value & 0b0010
         chipselect = value & 0b0001
-        return self.configure_peripherials(power, pullups, aux, chipselect)
+        return self.configure_peripherals(power, pullups, aux, chipselect)
 
-    def configure_peripherials(self,
+    def configure_peripherals(self,
                                power: int = PinConfiguration.DISABLE,
                                pull_ups: int = PinConfiguration.DISABLE,
                                aux: int = PinConfiguration.DISABLE,
