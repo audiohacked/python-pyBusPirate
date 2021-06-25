@@ -52,6 +52,12 @@ class BusPirateSpiTest(unittest.TestCase):
         self.assertEqual(self.bus_pirate.chip_select(spi.CsLevel.LOW), True)
         self.bus_pirate.serial.write.assert_called_with(0x02|0x00)
 
+    def test_cs(self):
+        self.bus_pirate.serial.read.return_value = 0x01
+        self.bus_pirate.cs = spi.CsLevel.LOW
+        self.assertEqual(self.bus_pirate.cs, spi.CsLevel.LOW)
+        self.bus_pirate.serial.write.assert_called_with(0x02|0x00)
+
     def test_sniff(self):
         self.bus_pirate.serial.read.return_value = 0x01
         self.assertEqual(self.bus_pirate.sniff(spi.CsSniffTrigger.LOW), True)
@@ -59,16 +65,14 @@ class BusPirateSpiTest(unittest.TestCase):
 
     def test_spi_speed(self):
         self.bus_pirate.serial.read.return_value = 0x01
-        self.assertEqual(self.bus_pirate.spi_speed(spi.SpiSpeed.SPEED_8MHZ), True)
+        self.bus_pirate.speed = spi.SpiSpeed.SPEED_8MHZ
+        self.assertEqual(self.bus_pirate.speed, 0b111)
         self.bus_pirate.serial.write.assert_called_with(0x60|0x07)
 
-    def test_spi_configuration(self):
+    def test_spi_config(self):
         self.bus_pirate.serial.read.return_value = 0x01
-        result = self.bus_pirate.spi_configuration(spi.SpiConfiguration.PinOutput.HIZ,
-                                                   spi.SpiConfiguration.ClockPhase.LOW,
-                                                   spi.SpiConfiguration.ClockEdge.IDLE_TO_ACTIVE,
-                                                   spi.SpiConfiguration.SampleTime.MIDDLE)
-        self.assertEqual(result, True)
+        self.bus_pirate.config = 0b0000
+        self.assertEqual(self.bus_pirate.config, 0b0000)
         self.bus_pirate.serial.write.assert_called_with(0x80|0x00)
 
     def test_write_then_read(self):

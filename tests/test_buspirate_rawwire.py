@@ -156,15 +156,15 @@ class BusPirateRawWireTest(unittest.TestCase):
             self.bus_pirate.pullup_voltage_select()
 
     def test_rawwire_speed(self):
+        self.bus_pirate.speed = rawwire.RawWireSpeed.SPEED_100KHZ
         self.bus_pirate.serial.read.return_value = 0x01
-        result = self.bus_pirate.rawwire_speed(rawwire.RawWireSpeed.SPEED_100KHZ)
-        self.assertEqual(result, True)
+        self.assertEqual(self.bus_pirate.speed, rawwire.RawWireSpeed.SPEED_100KHZ)
         self.bus_pirate.serial.write.assert_called_with(0x60|0x02)
 
     def test_rawwire_config(self):
+        self.bus_pirate.config = 0b0000
         self.bus_pirate.serial.read.return_value = 0x01
-        result = self.bus_pirate.rawwire_config()
-        self.assertEqual(result, True)
+        self.assertEqual(self.bus_pirate.config, 0b0000)
         self.bus_pirate.serial.write.assert_called_with(0x80|0x00)
 
     @unittest.skip

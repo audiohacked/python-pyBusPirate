@@ -29,7 +29,7 @@ from buspirate.base import BusPirate
 class BusPirateTest(unittest.TestCase):
     """ Unit Test class """
     @mock.patch('serial.Serial', autospec=True)
-    def setUp(self, mock_serial): # pylint: disable=W0613,W0221
+    def setUp(self, mock_serial):  # pylint: disable=W0613,W0221
         """ Unit Test setup """
         self.bus_pirate = BusPirate("/dev/ttyUSB0")
 
@@ -59,9 +59,10 @@ class BusPirateTest(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             self.bus_pirate.set_pins()
 
-    def test_configure_peripherials(self):
+    def test_configure_peripherals(self):
+        self.bus_pirate.peripherals = 0b0000
         self.bus_pirate.serial.read.return_value = 0x01
-        self.assertEqual(self.bus_pirate.configure_peripherials(), True)
+        self.assertEqual(self.bus_pirate.peripherals, 0b0000)
         self.bus_pirate.serial.write.assert_called_with(0x40|0x00)
 
     def test_bulk_write(self):
