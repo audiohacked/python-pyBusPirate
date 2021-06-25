@@ -196,7 +196,7 @@ class BusPirate(object):
         data += pull_ups
         data += aux
         data += chip_select
-        self.write(0x40|data)
+        self.write(0x40 | data)
         return self.read(1) == 0x01
 
     def bulk_write(self, count: int = 16, data: bytes = None) -> bytes:
@@ -205,7 +205,7 @@ class BusPirate(object):
         """
         if count == 0 or count > 16:
             raise ValueError
-        self.write(0x10|count-1)
+        self.write(0x10 | count-1)
         if self.read(1) == 0x01:
             if data is None:
                 data = bytes(count)
@@ -237,7 +237,7 @@ class BusPirate(object):
         send_buffer: bytes = [command, write_count, read_count, write_data]
         self.write(send_buffer)
         recv_buffer = self.read(read_count+1)
-        if recv_buffer[0] is 0x01:
+        if recv_buffer[0] == 0x01:
             if len(recv_buffer[1:]) is read_count:
                 return recv_buffer[1:]
         return bytes()

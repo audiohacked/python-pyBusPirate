@@ -20,6 +20,7 @@
 
 from buspirate.base import BusPirate
 
+
 class OneWire(BusPirate):
     """ OneWire BitBanging on the BusPirate """
     @property
@@ -78,6 +79,7 @@ class OneWire(BusPirate):
         Unimplmented!
         """
         raise NotImplementedError
+
 
 if __name__ == '__main__':
     pass

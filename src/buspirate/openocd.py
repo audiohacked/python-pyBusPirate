@@ -20,6 +20,7 @@
 
 from buspirate.base import BusPirate
 
+
 class JTAG(BusPirate):
     """ JTAG BitBanging on the BusPirate """
     @property

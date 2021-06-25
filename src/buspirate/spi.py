@@ -140,8 +140,8 @@ class SPI(BusPirate):
         :returns: returns Success or Failure
         :rtype: bool.
         """
-        self.write(0x02|level)
-        return self.read(1) is 0x01
+        self.write(0x02 | level)
+        return self.read(1) == 0x01
 
     def sniff(self, trigger: int = CsSniffTrigger.LOW) -> bool:
         """
@@ -153,7 +153,7 @@ class SPI(BusPirate):
         :returns: returns Success or Failure
         :rtype: bool.
         """
-        self.write(0x0C|trigger)
+        self.write(0x0C | trigger)
         return self.read(1) == 0x01
 
     @property
@@ -177,7 +177,7 @@ class SPI(BusPirate):
         :returns: returns Success or Failure
         :rtype: bool
         """
-        self.write(0x60|spi_speed)
+        self.write(0x60 | spi_speed)
         return self.read(1) == 0x01
 
     @property
@@ -219,11 +219,11 @@ class SPI(BusPirate):
         :rtype: bool.
         """
         spi_configuration = 0
-        spi_configuration += pin_output<<3
-        spi_configuration += clock_phase<<2
-        spi_configuration += clock_edge<<1
+        spi_configuration += pin_output << 3
+        spi_configuration += clock_phase << 2
+        spi_configuration += clock_edge << 1
         spi_configuration += sample_time
-        self.write(0x80|spi_configuration)
+        self.write(0x80 | spi_configuration)
         return self.read(1) == 0x01
 
     def write_then_read(self,

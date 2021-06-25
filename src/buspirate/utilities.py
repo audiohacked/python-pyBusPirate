@@ -20,6 +20,7 @@
 
 from buspirate.base import BusPirate
 
+
 class Voltage(BusPirate):
     """ Voltage BitBang """
     def take_once(self):

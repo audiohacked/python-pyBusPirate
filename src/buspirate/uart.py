@@ -87,7 +87,7 @@ class UART(BusPirate):
         :returns: Success or Failure
         :rtype: bool
         """
-        self.write(0x02|start_stop)
+        self.write(0x02 | start_stop)
         return self.read(1) == 0x01
 
     def manual_baudrate(self, brg_register: int = 0x0000) -> bool:
@@ -136,7 +136,7 @@ class UART(BusPirate):
         :returns: Success or Failure
         :rtype: bool
         """
-        self.write(0x60|baudrate)
+        self.write(0x60 | baudrate)
         return self.read(1) == 0x01
 
     @property
@@ -182,8 +182,9 @@ class UART(BusPirate):
         uart_configuration += databits_parity
         uart_configuration += stop_bits
         uart_configuration += rx_polarity
-        self.write(0x80|uart_configuration)
+        self.write(0x80 | uart_configuration)
         return self.read(1) == 0x01
+
 
 if __name__ == '__main__':
     pass
