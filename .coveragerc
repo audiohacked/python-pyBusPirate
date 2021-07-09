@@ -1,6 +1,0 @@
-[run]
-include =
-    src/*
-omit = 
-    */__init__.py
-    */__version__.py
